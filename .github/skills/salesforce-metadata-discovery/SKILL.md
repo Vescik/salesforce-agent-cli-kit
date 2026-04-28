@@ -1,8 +1,8 @@
-# Salesforce CLI Automation
+# Salesforce Metadata Discovery
 
 ## Purpose
 
-Provide safe, repeatable Salesforce DX command workflows for project inspection, metadata discovery, review support, implementation validation, and deployment readiness checks.
+Discover Salesforce DX package directories and metadata types before review or implementation.
 
 ## When to use
 
@@ -31,15 +31,9 @@ Use this skill when a Salesforce DX task needs repeatable CLI-oriented inspectio
 Safe read-only examples:
 
 ```bash
-pwd
-ls -la
-find . -maxdepth 4 -type f | sort
-git status --short
-git diff
 cat sfdx-project.json
-sf org list
-sf project retrieve preview
-sf apex list test
+find force-app -maxdepth 4 -type f | sort | head -200
+find . -type f \( -name "*.flow-meta.xml" -o -name "*.cls" -o -name "*.trigger" -o -name "*.js" -o -name "*.object-meta.xml" -o -name "*.field-meta.xml" \) | sort
 ```
 
 Validation / dry-run examples:

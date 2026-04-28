@@ -1,8 +1,8 @@
-# Salesforce CLI Automation
+# Salesforce Debugging
 
 ## Purpose
 
-Provide safe, repeatable Salesforce DX command workflows for project inspection, metadata discovery, review support, implementation validation, and deployment readiness checks.
+Diagnose Salesforce metadata, Apex, Flow, LWC, test, and deployment failures using evidence-first workflows.
 
 ## When to use
 
@@ -31,15 +31,9 @@ Use this skill when a Salesforce DX task needs repeatable CLI-oriented inspectio
 Safe read-only examples:
 
 ```bash
-pwd
-ls -la
-find . -maxdepth 4 -type f | sort
 git status --short
-git diff
-cat sfdx-project.json
 sf org list
-sf project retrieve preview
-sf apex list test
+sf apex get test --test-run-id <id> --result-format human
 ```
 
 Validation / dry-run examples:

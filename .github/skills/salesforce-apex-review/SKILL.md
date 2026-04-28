@@ -1,8 +1,8 @@
-# Salesforce CLI Automation
+# Salesforce Apex Review
 
 ## Purpose
 
-Provide safe, repeatable Salesforce DX command workflows for project inspection, metadata discovery, review support, implementation validation, and deployment readiness checks.
+Review Apex classes, triggers, handlers, services, invocable actions, async code, and tests.
 
 ## When to use
 
@@ -31,15 +31,9 @@ Use this skill when a Salesforce DX task needs repeatable CLI-oriented inspectio
 Safe read-only examples:
 
 ```bash
-pwd
-ls -la
-find . -maxdepth 4 -type f | sort
-git status --short
-git diff
-cat sfdx-project.json
-sf org list
-sf project retrieve preview
-sf apex list test
+find force-app -type f \( -name "*.cls" -o -name "*.trigger" \) | sort
+grep -R "SELECT .* FROM" force-app/main/default/classes force-app/main/default/triggers -n || true
+grep -R "insert \|update \|delete \|upsert \|Database\." force-app/main/default/classes force-app/main/default/triggers -n || true
 ```
 
 Validation / dry-run examples:

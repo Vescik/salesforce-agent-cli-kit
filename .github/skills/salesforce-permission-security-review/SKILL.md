@@ -1,8 +1,8 @@
-# Salesforce CLI Automation
+# Salesforce Permission Security Review
 
 ## Purpose
 
-Provide safe, repeatable Salesforce DX command workflows for project inspection, metadata discovery, review support, implementation validation, and deployment readiness checks.
+Review CRUD/FLS, sharing, permission sets, profiles, exposed Apex, named credentials, and hardcoded secrets.
 
 ## When to use
 
@@ -31,15 +31,9 @@ Use this skill when a Salesforce DX task needs repeatable CLI-oriented inspectio
 Safe read-only examples:
 
 ```bash
-pwd
-ls -la
-find . -maxdepth 4 -type f | sort
-git status --short
-git diff
-cat sfdx-project.json
-sf org list
-sf project retrieve preview
-sf apex list test
+find force-app -type f \( -name "*.permissionset-meta.xml" -o -name "*.profile-meta.xml" -o -name "*.cls" \) | sort
+grep -R "@AuraEnabled\|@InvocableMethod\|without sharing\|with sharing\|inherited sharing" force-app/main/default/classes -n || true
+grep -R -n -i "password\|secret\|token\|client_secret\|refresh_token\|access_token" force-app .github docs scripts || true
 ```
 
 Validation / dry-run examples:

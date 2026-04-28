@@ -2,78 +2,52 @@
 
 ## Purpose
 
-This repository contains reusable instructions, skills, custom agents, and CLI command documentation for Salesforce DX automation work.
+This repository is a reusable Salesforce AI Agent Toolkit for Salesforce DX inspection, review, implementation, and validation workflows.
 
-Agents working in this repository should help inspect, modify, validate, and document Salesforce DX projects safely.
+Agents should keep this repo generic. Do not add org aliases, credentials, company names, customer data, object-specific assumptions, or one-off project instructions.
 
-## General Rules
+## Global safety rules
 
-- Prefer minimal, safe changes.
 - Inspect the repository before editing.
-- Do not deploy to production unless explicitly requested.
-- Do not run destructive commands unless explicitly requested.
-- Use CLI commands to verify facts instead of guessing.
-- Preserve existing project structure and naming conventions.
-- Be honest when validation was not run.
-- Never claim a command passed if it was not executed.
+- Prefer small, composable files over large instruction dumps.
+- Preserve existing useful files and architecture unless they are clearly superseded.
+- Do not deploy to production unless the user explicitly requests it.
+- Do not run destructive commands unless the user explicitly requests them.
+- Do not claim validation passed unless the command was actually run.
+- Do not include secrets, tokens, usernames, passwords, org URLs, or project-specific customer data.
 
-## Command Safety
+## Repository inspection rules
 
-Safe read-only commands may be run automatically:
+Start with safe read-only inspection:
 
 ```bash
 pwd
-ls
-find
-grep
-git status
-git diff
+ls -la
+find . -maxdepth 4 -type f | sort
+git status --short
+```
+
+For Salesforce DX projects, also inspect:
+
+```bash
 cat sfdx-project.json
 sf org list
+find force-app -maxdepth 4 -type f | sort | head -200
 ```
 
-Validation commands may be run when useful:
+If a file or command is unavailable, report that clearly and continue with local evidence.
 
-```bash
-sf project deploy validate
-sf project deploy start --dry-run
-sf apex run test
-npm test
-npm run lint
-npm run build
-```
+## Salesforce CLI safety
 
-Do not run these automatically:
+Classify commands before running them:
 
-```bash
-sf project deploy start
-rm -rf
-git reset --hard
-git clean -fd
-sf org delete scratch
-```
+- Safe read-only: local file inspection, Git status/diff, metadata search, org listing, non-mutating SOQL/Tooling API queries.
+- Validation / dry-run: tests, lint, builds, scanner, validate-only deployments, dry-run deploys.
+- Dangerous / needs explicit approval: real deploys, retrieves that overwrite local files, destructive changes, org deletion, file deletion, git reset, git clean.
 
-## Salesforce Preferences
+Never run production deployment commands or destructive commands by default.
 
-Prefer:
-
-- Formula Fields for simple derived values.
-- Validation Rules for simple blocking.
-- Before-save Flow for same-record updates.
-- After-save Flow for related-record updates and logging.
-- Scheduled Flow for delayed recalculation.
-- Platform Events for async decoupling.
-- Apex only when declarative tools are insufficient.
-
-Avoid:
-
-- Get Records inside loops.
-- DML inside loops.
-- One giant Flow doing many unrelated jobs.
-- Hardcoded IDs.
-- Production deployments without explicit instruction.
-
-## Final Response Format
+## Default output format
 
 Use:
 
@@ -85,3 +59,15 @@ Use:
 ## Risks / assumptions
 ## Next steps
 ```
+
+## Handoff to specialized agents
+
+- Use Salesforce Code Reviewer for broad project and metadata review.
+- Use Salesforce Apex Engineer for Apex implementation and test design.
+- Use Salesforce Flow Architect for Flow review, refactor, and automation design.
+- Use Salesforce LWC Engineer for Lightning Web Component work.
+- Use Salesforce Security Reviewer for CRUD/FLS, sharing, permissions, exposed Apex, and secrets review.
+- Use Salesforce Release Validator for package.xml, test level, dry-run, and deployment readiness checks.
+- Use Salesforce CLI Implementer for command-driven inspection and validation.
+- Use Salesforce Researcher for source-backed research before implementation.
+

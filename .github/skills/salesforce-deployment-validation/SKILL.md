@@ -1,8 +1,8 @@
-# Salesforce CLI Automation
+# Salesforce Deployment Validation
 
 ## Purpose
 
-Provide safe, repeatable Salesforce DX command workflows for project inspection, metadata discovery, review support, implementation validation, and deployment readiness checks.
+Validate Salesforce deployment readiness without production deployment.
 
 ## When to use
 
@@ -31,15 +31,9 @@ Use this skill when a Salesforce DX task needs repeatable CLI-oriented inspectio
 Safe read-only examples:
 
 ```bash
-pwd
-ls -la
-find . -maxdepth 4 -type f | sort
 git status --short
-git diff
-cat sfdx-project.json
 sf org list
-sf project retrieve preview
-sf apex list test
+sf project deploy validate --source-dir force-app/main/default --test-level NoTestRun
 ```
 
 Validation / dry-run examples:

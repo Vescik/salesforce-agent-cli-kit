@@ -1,8 +1,8 @@
-# Salesforce CLI Automation
+# Salesforce Flow Review
 
 ## Purpose
 
-Provide safe, repeatable Salesforce DX command workflows for project inspection, metadata discovery, review support, implementation validation, and deployment readiness checks.
+Review Flow metadata for trigger timing, entry criteria, bulk safety, recursion, fault handling, and maintainability.
 
 ## When to use
 
@@ -31,15 +31,9 @@ Use this skill when a Salesforce DX task needs repeatable CLI-oriented inspectio
 Safe read-only examples:
 
 ```bash
-pwd
-ls -la
-find . -maxdepth 4 -type f | sort
-git status --short
-git diff
-cat sfdx-project.json
-sf org list
-sf project retrieve preview
-sf apex list test
+find . -type f -name "*.flow-meta.xml" | sort
+grep -n "<label>\|<processType>\|<start>\|<object>\|<triggerType>\|<recordTriggerType>" path/to/flow.flow-meta.xml
+grep -n "<recordLookups>\|<recordUpdates>\|<recordCreates>\|<loops>\|<decisions>\|<subflows>\|<actionCalls>" path/to/flow.flow-meta.xml
 ```
 
 Validation / dry-run examples:

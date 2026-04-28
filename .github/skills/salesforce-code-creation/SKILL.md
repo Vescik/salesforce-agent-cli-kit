@@ -1,8 +1,8 @@
-# Salesforce CLI Automation
+# Salesforce Code Creation
 
 ## Purpose
 
-Provide safe, repeatable Salesforce DX command workflows for project inspection, metadata discovery, review support, implementation validation, and deployment readiness checks.
+Create Apex, LWC, Flow-adjacent metadata, and tests using existing project conventions.
 
 ## When to use
 
@@ -31,15 +31,9 @@ Use this skill when a Salesforce DX task needs repeatable CLI-oriented inspectio
 Safe read-only examples:
 
 ```bash
-pwd
-ls -la
-find . -maxdepth 4 -type f | sort
 git status --short
-git diff
 cat sfdx-project.json
-sf org list
-sf project retrieve preview
-sf apex list test
+find force-app/main/default/classes force-app/main/default/lwc -maxdepth 3 -type f | sort
 ```
 
 Validation / dry-run examples:

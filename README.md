@@ -52,6 +52,60 @@ Use agents when the task benefits from a specialized role:
 - `salesforce-cli-implementer.agent.md` for command-driven inspection and validation.
 - `salesforce-researcher.agent.md` for source-backed research.
 
+## Salesforce Admin Read-Only Assistant Mode
+
+This repository also includes read-only agents, skills, and prompts for Salesforce admins who need help understanding Salesforce configuration without making changes.
+
+These agents do not deploy, test, edit code, edit metadata, modify records, run anonymous Apex, commit, push, or create pull requests.
+
+Use this mode for:
+
+- explaining Flows
+- understanding permissions
+- understanding object relationships
+- investigating unexpected field changes
+- preparing developer escalation summaries
+- troubleshooting admin issues safely
+
+Admin-focused agents include:
+
+- `salesforce-admin-explainer.agent.md`
+- `salesforce-flow-explainer.agent.md`
+- `salesforce-permission-explainer.agent.md`
+- `salesforce-object-model-explainer.agent.md`
+- `salesforce-automation-impact-analyst.agent.md`
+- `salesforce-lightning-page-explainer.agent.md`
+- `salesforce-validation-rule-explainer.agent.md`
+- `salesforce-report-dashboard-explainer.agent.md`
+- `salesforce-admin-troubleshooting-guide.agent.md`
+
+### Example admin prompts
+
+```text
+Use the Salesforce Flow Explainer to explain what this Flow does in plain language.
+
+Use the Salesforce Permission Explainer to explain why a user cannot edit this field.
+
+Use the Automation Impact Analyst to investigate what may change Invoice__c.Status__c.
+
+Use the Admin Troubleshooting Guide to help me check why a related list is empty.
+
+Prepare a developer escalation summary for this issue.
+```
+
+### Hard safety boundaries
+
+Admin Read-Only agents must never:
+
+- deploy
+- run tests
+- edit code
+- edit metadata
+- modify records
+- run anonymous Apex
+- commit or push changes
+- create pull requests
+
 ## How to use skills
 
 Skills are reusable workflows. Start with `salesforce-cli-automation` for general inspection, then use focused skills such as `salesforce-apex-review`, `salesforce-flow-review`, `salesforce-lwc-review`, `salesforce-permission-security-review`, `salesforce-deployment-validation`, `salesforce-metadata-discovery`, `salesforce-code-creation`, or `salesforce-debugging`.
@@ -92,4 +146,8 @@ Prompts in `.github/prompts` are standalone. Paste one into Codex, GitHub Copilo
 - `docs/prompt-library-guide.md`
 - `docs/salesforce-review-playbook.md`
 - `docs/salesforce-cli-commands.md`
+- `docs/admin-readonly-assistant-guide.md`
+- `docs/admin-safe-troubleshooting-playbook.md`
+- `docs/admin-salesforce-concepts-glossary.md`
+- `docs/admin-escalation-templates.md`
 - `docs/research/*.md`

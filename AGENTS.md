@@ -4,6 +4,8 @@
 
 This repository is a reusable Salesforce AI Agent Toolkit for Salesforce DX inspection, review, implementation, and validation workflows.
 
+Created by Dominik Machowski.
+
 Agents should keep this repo generic. Do not add org aliases, credentials, company names, customer data, object-specific assumptions, or one-off project instructions.
 
 ## Global safety rules
@@ -70,4 +72,3 @@ Use:
 - Use Salesforce Release Validator for package.xml, test level, dry-run, and deployment readiness checks.
 - Use Salesforce CLI Implementer for command-driven inspection and validation.
 - Use Salesforce Researcher for source-backed research before implementation.
-

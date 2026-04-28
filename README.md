@@ -6,11 +6,15 @@ A reusable Salesforce AI Agent Toolkit for Salesforce DX repositories. It packag
 
 The kit is intentionally generic. It does not contain org aliases, credentials, customer names, object-specific assumptions, or deployment targets.
 
+## Creator
+
+Created by Dominik Machowski.
+
 ## Who it is for
 
 - Salesforce developers reviewing Apex, Flow, LWC, metadata, and permissions.
 - Technical architects standardizing agent-assisted Salesforce delivery.
-- Teams using Codex, GitHub Copilot, or CLI-based agents on Salesforce DX projects.
+- Teams using VS Code, GitHub Copilot, or CLI-based agents on Salesforce DX projects.
 - Release owners who need repeatable validate-only deployment workflows.
 
 ## How to use with GitHub Copilot
@@ -25,9 +29,15 @@ Recommended Copilot layers:
 - `.github/skills/*/SKILL.md` for reusable workflows.
 - `.github/prompts/*.prompt.md` for copy-paste-ready task templates.
 
-## How to use with Codex
+## How to use with VS Code and GitHub Copilot
 
-Use `AGENTS.md` as the default operating policy. Start tasks by inspecting the target Salesforce DX repo, classify commands by safety, then select the relevant skill or prompt from `.github/skills` or `.github/prompts`.
+Use this repository as a reusable instruction, agent, skill, and prompt library for Salesforce work in VS Code.
+
+1. Open your Salesforce DX project in VS Code.
+2. Use GitHub Copilot Chat or a GitHub Copilot coding agent with the relevant files from this kit.
+3. Start tasks by inspecting the target Salesforce DX repo.
+4. Classify commands by safety before suggesting or running them.
+5. Select the relevant skill from `.github/skills` or prompt from `.github/prompts`.
 
 ## How to use agents
 
@@ -83,4 +93,3 @@ Prompts in `.github/prompts` are standalone. Paste one into Codex, GitHub Copilo
 - `docs/salesforce-review-playbook.md`
 - `docs/salesforce-cli-commands.md`
 - `docs/research/*.md`
-

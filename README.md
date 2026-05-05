@@ -41,16 +41,15 @@ Use this repository as a reusable instruction, agent, skill, and prompt library 
 
 ## How to use agents
 
-Use agents when the task benefits from a specialized role:
+Use the smallest agent role that fits the task:
 
-- `salesforce-code-reviewer.agent.md` for broad project review.
-- `salesforce-apex-engineer.agent.md` for Apex creation, refactor, and tests.
-- `salesforce-flow-architect.agent.md` for Flow review and redesign.
-- `salesforce-lwc-engineer.agent.md` for LWC review and creation.
-- `salesforce-security-reviewer.agent.md` for CRUD/FLS, sharing, permissions, and secrets.
-- `salesforce-release-validator.agent.md` for deployment readiness.
-- `salesforce-cli-implementer.agent.md` for command-driven inspection and validation.
-- `salesforce-researcher.agent.md` for source-backed research.
+- `salesforce-code-review-agent.agent.md` for Apex, Flow, LWC, metadata, permissions, security, dependency, and deployment-risk review.
+- `salesforce-developer-agent.agent.md` for implementation across Apex, Flow metadata, LWC, metadata XML, scripts, and docs.
+- `salesforce-test-agent.agent.md` for Apex tests, LWC tests, lint, scanner, CI checks, and validation evidence.
+- `salesforce-deployment-agent.agent.md` for package scope, validate-only planning, release notes, rollback notes, and deployment checklists.
+- `salesforce-documentation-creator-agent.agent.md` for Azure Wiki pages, user story context, metadata summaries, release notes, and handoff documentation.
+
+Developer and Code Review remain separate on purpose: review should classify risk without editing by default, while development is an implementation workflow.
 
 ## Salesforce Admin Read-Only Agents
 

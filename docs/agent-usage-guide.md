@@ -2,14 +2,15 @@
 
 ## Agent selection
 
-- Salesforce Code Reviewer: broad project review and risk classification.
-- Salesforce Apex Engineer: Apex and Apex tests.
-- Salesforce Flow Architect: Flow analysis, design, and refactor.
-- Salesforce LWC Engineer: Lightning Web Components.
-- Salesforce Security Reviewer: permissions, CRUD/FLS, sharing, secrets, exposed Apex.
-- Salesforce Release Validator: deployment readiness and validate-only workflows.
-- Salesforce CLI Implementer: command-driven inspection and validation.
-- Salesforce Researcher: official-doc research and recommendations.
+- Salesforce Code Review Agent: review Apex, Flow, LWC, metadata, permissions, security, dependencies, and deployment risk without editing by default.
+- Salesforce Developer Agent: implement requested Salesforce DX changes across Apex, Flow metadata, LWC, metadata XML, scripts, and docs.
+- Salesforce Test Agent: plan and run safe tests, lint, scanner, CI checks, and validation evidence collection.
+- Salesforce Deployment Agent: prepare package scope, validate-only planning, release notes, rollback notes, and deployment checklists.
+- Salesforce Documentation Creator Agent: create Azure Wiki pages, user story context, metadata summaries, release notes, and handoff documentation.
+
+## Why Developer and Review are separate
+
+They should stay separate. Code review is a risk-classification workflow and should not edit files unless explicitly requested. Development is an implementation workflow and may edit files when the user asks for a change. Keeping them separate reduces accidental edits during review-only tasks.
 
 ## Typical flow
 
@@ -21,8 +22,8 @@
 
 ## Handoffs
 
-- Reviewer to Apex Engineer for implementation.
-- Flow Architect to Release Validator for deploy readiness.
-- Security Reviewer to CLI Implementer for evidence gathering.
-- Researcher to any implementation agent after source-backed recommendations.
-
+- Code Review Agent to Developer Agent for concrete fixes.
+- Developer Agent to Test Agent for validation evidence.
+- Test Agent to Deployment Agent for release readiness.
+- Deployment Agent to Documentation Creator Agent for release notes and rollback docs.
+- Documentation Creator Agent to Code Review Agent when documentation exposes technical uncertainty or risk.

@@ -64,11 +64,10 @@ Use:
 
 ## Handoff to specialized agents
 
-- Use Salesforce Code Reviewer for broad project and metadata review.
-- Use Salesforce Apex Engineer for Apex implementation and test design.
-- Use Salesforce Flow Architect for Flow review, refactor, and automation design.
-- Use Salesforce LWC Engineer for Lightning Web Component work.
-- Use Salesforce Security Reviewer for CRUD/FLS, sharing, permissions, exposed Apex, and secrets review.
-- Use Salesforce Release Validator for package.xml, test level, dry-run, and deployment readiness checks.
-- Use Salesforce CLI Implementer for command-driven inspection and validation.
-- Use Salesforce Researcher for source-backed research before implementation.
+- Use Salesforce Code Review Agent for Apex, Flow, LWC, metadata, permissions, security, dependency, and deployment-risk review.
+- Use Salesforce Developer Agent for implementation across Apex, Flow metadata, LWC, metadata XML, scripts, and docs.
+- Use Salesforce Test Agent for Apex tests, LWC tests, lint, scanner, CI checks, and validation evidence.
+- Use Salesforce Deployment Agent for package scope, validate-only planning, release notes, rollback notes, and deployment checklists.
+- Use Salesforce Documentation Creator Agent for Azure Wiki pages, user story context, metadata summaries, release notes, and handoff docs.
+
+Keep Developer Agent separate from Code Review Agent. Review tasks should not edit files by default; implementation tasks may edit files only when requested.

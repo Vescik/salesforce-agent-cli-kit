@@ -4,11 +4,14 @@ const path = require('path');
 const requiredPaths = [
   '.github/copilot-instructions.md',
   'agents/salesforce-metadata-documentation-agent.md',
+  'agents/refactor-documentation-agent.md',
+  'agents/subagents/salesforce-metadata-analysis-agent.md',
   'skills',
   'prompts',
   'templates',
   'scripts/scan-force-app.js',
   'scripts/generate-docs.js',
+  'scripts/generate-user-story-doc.js',
   'scripts/validate-output.js',
   'output',
   'output/azure-wiki',
@@ -29,6 +32,10 @@ const requiredSkillFiles = [
   'skills/compare-metadata-changes.md',
   'skills/prepare-github-deployment.md',
   'skills/review-salesforce-flow.md',
+  'skills/salesforce-metadata-analysis.md',
+  'skills/azure-wiki-documentation.md',
+  'skills/markdown-quality-review.md',
+  'skills/git-wiki-publish.md',
 ];
 
 const requiredPromptFiles = [
@@ -40,9 +47,8 @@ const requiredPromptFiles = [
 
 const requiredTemplateFiles = [
   'templates/azure-wiki-page-template.md',
-  'templates/user-story-context-template.md',
+  'templates/user-story-azure-wiki-template.md',
   'templates/metadata-component-summary-template.md',
-  'templates/change-log-template.md',
 ];
 
 const allRequired = [

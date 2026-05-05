@@ -24,14 +24,21 @@ salesforce-copilot-agent/
 ├── .github/
 │   └── copilot-instructions.md
 ├── agents/
-│   └── salesforce-metadata-documentation-agent.md
+│   ├── salesforce-metadata-documentation-agent.md
+│   ├── refactor-documentation-agent.md
+│   └── subagents/
+│       └── salesforce-metadata-analysis-agent.md
 ├── skills/
 │   ├── analyze-salesforce-metadata.md
 │   ├── generate-azure-wiki-documentation.md
 │   ├── generate-user-story-context.md
 │   ├── compare-metadata-changes.md
 │   ├── prepare-github-deployment.md
-│   └── review-salesforce-flow.md
+│   ├── review-salesforce-flow.md
+│   ├── salesforce-metadata-analysis.md
+│   ├── azure-wiki-documentation.md
+│   ├── markdown-quality-review.md
+│   └── git-wiki-publish.md
 ├── prompts/
 │   ├── metadata-analysis.prompt.md
 │   ├── azure-wiki-documentation.prompt.md
@@ -45,6 +52,7 @@ salesforce-copilot-agent/
 ├── scripts/
 │   ├── scan-force-app.js
 │   ├── generate-docs.js
+│   ├── generate-user-story-doc.js
 │   └── validate-output.js
 └── output/
     ├── azure-wiki/
@@ -66,7 +74,7 @@ No Salesforce org authentication is required for the included scripts.
 1. Open this folder in VS Code.
 2. Open GitHub Copilot Chat.
 3. Reference `.github/copilot-instructions.md`.
-4. Use `agents/salesforce-metadata-documentation-agent.md` as the agent role.
+4. Use `agents/refactor-documentation-agent.md` for User Story Azure Wiki documentation, or `agents/salesforce-metadata-documentation-agent.md` for general metadata documentation.
 5. Use the relevant prompt from `prompts/`.
 6. Run the local scripts to prepare scan and placeholder outputs.
 
@@ -102,6 +110,44 @@ output/metadata-analysis/force-app-scan.json
 output/azure-wiki/solution-documentation.md
 output/azure-wiki/deployment-notes.md
 output/azure-wiki/rollback-notes.md
+```
+
+## How to Generate User Story Documentation Drafts
+
+Use the Refactor Documentation Agent when documenting a completed or partially completed Salesforce User Story.
+
+Default wiki configuration:
+
+```text
+WIKI_REPO_PATH=../azure-wiki-repo
+WIKI_USER_STORY_DOCS_PATH=User-Stories
+```
+
+The wiki repo path must already exist. The script stops if it does not exist.
+
+Example:
+
+```bash
+node scripts/generate-user-story-doc.js \
+  --story-id "US-000123" \
+  --title "Prevent invoice status from changing unexpectedly" \
+  --description-file "input/story-description.md" \
+  --acceptance-criteria-file "input/acceptance-criteria.md" \
+  --force-app-path "force-app" \
+  --wiki-repo-path "../azure-wiki-repo" \
+  --wiki-docs-path "User-Stories"
+```
+
+The script creates a draft Markdown file under:
+
+```text
+<WIKI_REPO_PATH>/<WIKI_USER_STORY_DOCS_PATH>/<USER_STORY_ID-or-draft>/
+```
+
+It does not commit or push. Commit and push are allowed only after explicit approval such as:
+
+```text
+APPROVE WIKI PUSH
 ```
 
 ## How to Generate User Story Context

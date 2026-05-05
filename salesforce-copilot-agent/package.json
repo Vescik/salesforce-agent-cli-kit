@@ -6,6 +6,7 @@
   "scripts": {
     "scan": "node scripts/scan-force-app.js",
     "generate": "node scripts/generate-docs.js",
+    "generate:story-doc": "node scripts/generate-user-story-doc.js",
     "validate": "node scripts/validate-output.js"
   },
   "keywords": [],

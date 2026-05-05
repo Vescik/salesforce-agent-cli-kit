@@ -18,12 +18,6 @@ Agents should keep this repo generic. Do not add org aliases, credentials, compa
 - Do not claim validation passed unless the command was actually run.
 - Do not include secrets, tokens, usernames, passwords, org URLs, or project-specific customer data.
 
-## Admin Read-Only Mode
-
-When using Salesforce Admin Assistant or Admin Read-Only agents, the stricter read-only policy in `.github/instructions/salesforce-admin-readonly.instructions.md` overrides developer-oriented guidance.
-
-Admin Read-Only agents are explanation-only. They must not deploy, run deployment validation, run tests, edit code, edit metadata, modify records, run anonymous Apex, change permissions, commit, push, or create pull requests.
-
 ## Repository inspection rules
 
 Start with safe read-only inspection:
@@ -78,4 +72,3 @@ Use:
 - Use Salesforce Release Validator for package.xml, test level, dry-run, and deployment readiness checks.
 - Use Salesforce CLI Implementer for command-driven inspection and validation.
 - Use Salesforce Researcher for source-backed research before implementation.
-- Use Salesforce Admin Explainer, Flow Explainer, Permission Explainer, Object Model Explainer, Automation Impact Analyst, Lightning Page Explainer, Validation Rule Explainer, Report and Dashboard Explainer, and Admin Troubleshooting Guide for read-only admin explanation workflows.

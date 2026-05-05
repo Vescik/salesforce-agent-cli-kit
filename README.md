@@ -56,12 +56,6 @@ References:
 │   ├── prompts/
 │   ├── skills/
 │   └── copilot-instructions.md
-├── agents/
-│   ├── refactor-documentation-agent.md
-│   ├── salesforce-metadata-documentation-agent.md
-│   └── subagents/
-├── skills/
-├── prompts/
 ├── templates/
 ├── scripts/
 ├── output/
@@ -98,25 +92,24 @@ The Azure Wiki repo path must already exist before generating wiki drafts.
 
 ### GitHub Copilot Custom Agents
 
-Use `.github/agents/` for broad Salesforce development workflows:
+Use `.github/agents/` for Salesforce development, Azure Wiki documentation, and Azure DevOps User Story fetch workflows:
 
+- `azure-devops-user-story-fetcher.agent.md`
+- `refactor-documentation-agent.md`
 - `salesforce-code-review-agent.agent.md`
 - `salesforce-developer-agent.agent.md`
+- `salesforce-metadata-documentation-agent.md`
 - `salesforce-test-agent.agent.md`
 - `salesforce-deployment-agent.agent.md`
 - `salesforce-documentation-creator-agent.agent.md`
 - `salesforce-user-story-documentation-runner.agent.md`
-- `azure-devops-user-story-fetcher.agent.md`
+- `subagents/salesforce-metadata-analysis-agent.md`
 
 Developer and Code Review remain separate on purpose: review should classify risk without editing by default, while development is an implementation workflow.
 
-### User Story Documentation Agents
+### Skills And Prompts
 
-Use `agents/` for Azure Wiki and Salesforce metadata documentation workflows:
-
-- `agents/refactor-documentation-agent.md`
-- `agents/salesforce-metadata-documentation-agent.md`
-- `agents/subagents/salesforce-metadata-analysis-agent.md`
+Use `.github/skills/` and `.github/prompts/` for all reusable workflow instructions and copy-paste task prompts. Root-level `scripts/`, `templates/`, `docs/`, and `output/` stay outside `.github` because they are executable helpers, Markdown templates, documentation, and generated artifacts.
 
 ## How To Use With VS Code And GitHub Copilot
 
@@ -232,7 +225,7 @@ The script:
 - does not commit
 - does not push
 
-Publishing requires explicit approval and should follow `skills/git-wiki-publish.md`.
+Publishing requires explicit approval and should follow `.github/skills/git-wiki-publish.md`.
 
 ## Scripts
 

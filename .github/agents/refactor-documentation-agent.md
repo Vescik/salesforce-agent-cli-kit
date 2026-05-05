@@ -60,12 +60,12 @@ If no User Story ID is provided, generate a safe file name from the title and ma
 
 1. Parse User Story ID, title, description, acceptance criteria, implementation notes, branch, commit range, and changed files.
 2. Identify keywords, objects, fields, status values, automation names, and business concepts from the User Story input.
-3. Delegate metadata inspection to `agents/subagents/salesforce-metadata-analysis-agent.md`.
+3. Delegate metadata inspection to `.github/agents/subagents/salesforce-metadata-analysis-agent.md`.
 4. Analyze metadata under `force-app/`.
 5. Identify relevant components and artifacts.
 6. Map components to Acceptance Criteria.
 7. Generate Azure Wiki documentation in Markdown using the template below.
-8. Run Markdown quality review using `skills/markdown-quality-review.md`.
+8. Run Markdown quality review using `.github/skills/markdown-quality-review.md`.
 9. Save the draft into the configured Azure Wiki repo path.
 10. Present the generated file path, summary, assumptions, and open questions to the user.
 11. Apply requested review changes.

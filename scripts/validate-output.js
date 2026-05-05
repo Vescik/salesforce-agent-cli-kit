@@ -4,11 +4,11 @@ const path = require('path');
 const requiredPaths = [
   '.github/copilot-instructions.md',
   '.github/agents/azure-devops-user-story-fetcher.agent.md',
-  'agents/salesforce-metadata-documentation-agent.md',
-  'agents/refactor-documentation-agent.md',
-  'agents/subagents/salesforce-metadata-analysis-agent.md',
-  'skills',
-  'prompts',
+  '.github/agents/salesforce-metadata-documentation-agent.md',
+  '.github/agents/refactor-documentation-agent.md',
+  '.github/agents/subagents/salesforce-metadata-analysis-agent.md',
+  '.github/skills',
+  '.github/prompts',
   'templates',
   'scripts/scan-force-app.js',
   'scripts/generate-docs.js',
@@ -28,23 +28,23 @@ const requiredPaths = [
 ];
 
 const requiredSkillFiles = [
-  'skills/analyze-salesforce-metadata.md',
-  'skills/generate-azure-wiki-documentation.md',
-  'skills/generate-user-story-context.md',
-  'skills/compare-metadata-changes.md',
-  'skills/prepare-github-deployment.md',
-  'skills/review-salesforce-flow.md',
-  'skills/salesforce-metadata-analysis.md',
-  'skills/azure-wiki-documentation.md',
-  'skills/markdown-quality-review.md',
-  'skills/git-wiki-publish.md',
+  '.github/skills/analyze-salesforce-metadata.md',
+  '.github/skills/generate-azure-wiki-documentation.md',
+  '.github/skills/generate-user-story-context.md',
+  '.github/skills/compare-metadata-changes.md',
+  '.github/skills/prepare-github-deployment.md',
+  '.github/skills/review-salesforce-flow.md',
+  '.github/skills/salesforce-metadata-analysis.md',
+  '.github/skills/azure-wiki-documentation.md',
+  '.github/skills/markdown-quality-review.md',
+  '.github/skills/git-wiki-publish.md',
 ];
 
 const requiredPromptFiles = [
-  'prompts/metadata-analysis.prompt.md',
-  'prompts/azure-wiki-documentation.prompt.md',
-  'prompts/user-story-context.prompt.md',
-  'prompts/deployment-checklist.prompt.md',
+  '.github/prompts/metadata-analysis.prompt.md',
+  '.github/prompts/azure-wiki-documentation.prompt.md',
+  '.github/prompts/user-story-context.prompt.md',
+  '.github/prompts/deployment-checklist.prompt.md',
 ];
 
 const requiredTemplateFiles = [

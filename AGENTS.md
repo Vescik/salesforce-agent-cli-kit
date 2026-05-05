@@ -12,10 +12,9 @@ Agents should keep this repo generic. Do not add org aliases, credentials, compa
 
 - Keep the kit as a single root-level package.
 - Do not add nested agent workspaces such as `salesforce-copilot-agent/`.
-- Put GitHub Copilot custom agents in `.github/agents/`.
-- Put documentation agents in `agents/`.
-- Put reusable skills in `skills/` and GitHub skill folders in `.github/skills/`.
-- Put reusable prompts in `prompts/` and GitHub prompt files in `.github/prompts/`.
+- Put all GitHub Copilot and documentation agents in `.github/agents/`.
+- Put reusable skills in `.github/skills/`.
+- Put reusable prompts in `.github/prompts/`.
 - Put helper scripts in `scripts/`.
 - Put Azure Wiki templates in `templates/`.
 - Keep local-only config in `config.json`; commit only `config.example.json`.

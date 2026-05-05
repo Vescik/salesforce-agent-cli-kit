@@ -2,7 +2,7 @@
 
 This repository is an OOTB-ready Salesforce DX agent workspace for GitHub Copilot/Codex workflows.
 
-Use `AGENTS.md` for global safety rules. Use focused files in `.github/agents`, `.github/instructions`, `.github/skills`, `.github/prompts`, `agents`, `skills`, `prompts`, and `templates` for detailed workflows.
+Use `AGENTS.md` for global safety rules. Use focused files in `.github/agents`, `.github/instructions`, `.github/skills`, `.github/prompts`, and `templates` for detailed workflows.
 
 This project can use Azure DevOps MCP in VS Code. When the user asks for Azure DevOps Work Item or User Story data, first check whether an Azure DevOps MCP read-only work item tool is available before asking the user to paste Description or Acceptance Criteria.
 

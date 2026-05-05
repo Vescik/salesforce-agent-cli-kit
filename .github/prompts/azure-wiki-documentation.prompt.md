@@ -20,6 +20,7 @@ Generate Azure Wiki documentation from the Salesforce metadata analysis.
 4. Do not use generic filler text.
 5. Do not expose secrets, credentials, org IDs, tokens, usernames, or private URLs.
 6. Mark uncertainty with `Assumption:` or `Requires confirmation:`.
+7. Include manual implementation/configuration steps only when provided by the user. Label them as user-provided delivery context.
 
 # Required Sections
 
@@ -45,6 +46,8 @@ Generate Azure Wiki documentation from the Salesforce metadata analysis.
 
 ## 10. Deployment Notes
 
-## 11. Rollback Notes
+## 11. Manual Implementation / Configuration Steps
 
-## 12. Change Log
+## 12. Rollback Notes
+
+## 13. Change Log

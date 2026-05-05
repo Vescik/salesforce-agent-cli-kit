@@ -166,6 +166,22 @@ Expected normalized JSON shape:
 
 Files under `input/ado-work-items/` are ignored by Git.
 
+Before running the generator, the agent should ask whether there are manual implementation, configuration, deployment, permission, data, or validation steps not visible in Salesforce metadata. If they exist, save them under `input/manual-steps/<work-item-id>.md` and run:
+
+```bash
+npm run agent:ado-story-doc -- \
+  --ado-work-item-json "input/ado-work-items/12345.json" \
+  --manual-steps-file "input/manual-steps/12345.md"
+```
+
+If there are no manual steps, reply to the agent with:
+
+```text
+NO MANUAL STEPS
+```
+
+Manual steps are documented as user-provided delivery context, not as confirmed metadata facts. Files under `input/manual-steps/` are ignored by Git.
+
 ## How To Generate User Story Azure Wiki Documentation
 
 After configuring `config.json`, run:
@@ -175,7 +191,8 @@ npm run agent:story-doc -- \
   --story-id "US-000123" \
   --title "Prevent invoice status from changing unexpectedly" \
   --description-file "input/story-description.md" \
-  --acceptance-criteria-file "input/acceptance-criteria.md"
+  --acceptance-criteria-file "input/acceptance-criteria.md" \
+  --manual-steps-file "input/manual-steps/US-000123.md"
 ```
 
 In GitHub Copilot Chat, use:
@@ -187,6 +204,7 @@ User Story ID: US-000123
 Title: Prevent invoice status from changing unexpectedly
 Description file: input/story-description.md
 Acceptance Criteria file: input/acceptance-criteria.md
+Manual steps file: input/manual-steps/US-000123.md
 
 Run the local documentation generator and create the Azure Wiki draft.
 Do not commit or push.
@@ -201,7 +219,8 @@ npm run generate:story-doc -- \
   --story-id "US-000123" \
   --title "Prevent invoice status from changing unexpectedly" \
   --description-file "input/story-description.md" \
-  --acceptance-criteria-file "input/acceptance-criteria.md"
+  --acceptance-criteria-file "input/acceptance-criteria.md" \
+  --manual-steps "Assign the target permission set group after deployment and complete a sandbox smoke test."
 ```
 
 Or pass paths directly:
@@ -212,6 +231,7 @@ node scripts/generate-user-story-doc.js \
   --title "Prevent invoice status from changing unexpectedly" \
   --description-file "input/story-description.md" \
   --acceptance-criteria-file "input/acceptance-criteria.md" \
+  --manual-steps-file "input/manual-steps/US-000123.md" \
   --force-app-path "force-app" \
   --wiki-repo-path "../azure-wiki-repo" \
   --wiki-docs-path "User-Stories"

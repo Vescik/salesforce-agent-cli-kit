@@ -39,10 +39,19 @@ If required inputs are missing, ask only for the missing values needed to run th
 1. Inspect repository status and confirm the generator exists.
 2. Confirm `config.json` exists, or instruct the user to copy `config.example.json` to `config.json`.
 3. Confirm the configured wiki repo path exists before generation.
-4. Build the command using `npm run agent:story-doc --`.
-5. Run the command with the supplied User Story inputs.
-6. Report the generated file path, detected components, assumptions, and next review step.
-7. Do not commit or push. Publishing is handled only after explicit user approval through the Git Wiki Publish skill.
+4. Ask the user exactly:
+
+```text
+Are there manual implementation, configuration, deployment, permission, data, or validation steps not visible in Salesforce metadata?
+If yes, provide them now. If no, reply: NO MANUAL STEPS.
+```
+
+5. If the user provides manual steps, save them under `input/manual-steps/<story-id-or-draft>.md`.
+6. Build the command using `npm run agent:story-doc --`.
+7. If manual steps were provided, include `--manual-steps-file`.
+8. Run the command with the supplied User Story inputs.
+9. Report the generated file path, detected components, manual steps status, assumptions, and next review step.
+10. Do not commit or push. Publishing is handled only after explicit user approval through the Git Wiki Publish skill.
 
 ## Preferred command
 
@@ -51,7 +60,8 @@ npm run agent:story-doc -- \
   --story-id "US-000123" \
   --title "Example title" \
   --description-file "input/story-description.md" \
-  --acceptance-criteria-file "input/acceptance-criteria.md"
+  --acceptance-criteria-file "input/acceptance-criteria.md" \
+  --manual-steps-file "input/manual-steps/US-000123.md"
 ```
 
 ## Allowed commands
@@ -65,6 +75,7 @@ find . -maxdepth 4 -type f | sort
 git status --short
 npm run agent:story-doc -- --help
 npm run agent:story-doc -- --story-id "<ID>" --title "<TITLE>"
+npm run agent:story-doc -- --story-id "<ID>" --title "<TITLE>" --manual-steps-file "input/manual-steps/<ID>.md"
 node scripts/generate-user-story-doc.js --help
 ```
 
@@ -91,6 +102,7 @@ rm -rf
 ## Generated file
 ## Inputs used
 ## Metadata detected
+## Manual steps
 ## Assumptions / open questions
 ## Commands run
 ## Next step
@@ -101,3 +113,4 @@ rm -rf
 - Hand off content review to Salesforce Documentation Creator Agent.
 - Hand off metadata uncertainty to Salesforce Code Review Agent or Salesforce Developer Agent.
 - Hand off publishing only to the Git Wiki Publish workflow after the user explicitly approves.
+- Do not infer manual steps from metadata. Only rewrite or organize user-provided manual steps.

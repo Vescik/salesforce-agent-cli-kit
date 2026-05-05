@@ -30,9 +30,13 @@ Each generated page must include:
 
 ## 10. Deployment Notes
 
-## 11. Rollback Notes
+## 11. Manual Implementation / Configuration Steps
 
-## 12. Change Log
+Include only user-provided manual steps. If none were provided, state that confirmation is required before publishing.
+
+## 12. Rollback Notes
+
+## 13. Change Log
 
 ## Rules
 
@@ -40,6 +44,7 @@ Each generated page must include:
 - Do not use generic filler text.
 - Use `Assumption: ...` when inferring from incomplete context.
 - Use `Requires confirmation: ...` when the source metadata does not prove the purpose.
+- Do not invent manual steps. Only rewrite, organize, and clearly label user-provided manual steps.
 - Do not include secrets, org IDs, tokens, usernames, or private URLs.
 
 ## Output

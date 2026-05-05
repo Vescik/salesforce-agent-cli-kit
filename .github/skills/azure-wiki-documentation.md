@@ -29,9 +29,10 @@ The documentation must include:
 11. UI impact
 12. Testing notes
 13. Deployment notes
-14. Risks, assumptions, and open questions
-15. Review checklist
-16. Change log
+14. Manual implementation/configuration steps, when user-provided
+15. Risks, assumptions, and open questions
+16. Review checklist
+17. Change log
 
 ## Rules
 
@@ -39,6 +40,7 @@ The documentation must include:
 - Keep language clear and direct.
 - Do not expose secrets or internal sensitive values.
 - Separate confirmed facts, inferred behavior, assumptions, and open questions.
+- Do not infer manual steps from metadata. Label them as user-provided delivery context.
 - Do not use Mermaid unless explicitly requested.
 - Use Azure DevOps Wiki compatible Markdown.
 

@@ -27,6 +27,7 @@ node scripts/generate-user-story-doc.js \\
   --story-id "US-000123" \\
   --title "Prevent invoice status from changing unexpectedly" \\
   --ado-work-item-json "input/ado-work-items/12345.json" \\
+  --manual-steps-file "input/manual-steps/12345.md" \\
   --description-file "input/story-description.md" \\
   --acceptance-criteria-file "input/acceptance-criteria.md" \\
   --force-app-path "force-app" \\
@@ -39,6 +40,7 @@ Optional:
 Notes:
 - Copy config.example.json to config.json for local repo paths.
 - Use --ado-work-item-json for normalized Azure DevOps Work Item data fetched by the Azure DevOps User Story Fetcher agent.
+- Use --manual-steps or --manual-steps-file for user-provided manual implementation, configuration, deployment, permission, data, or validation steps.
 - The wiki repo path must already exist.
 - Existing documentation is not overwritten. A proposed update file is created instead.
 - This script does not commit or push. Publishing requires explicit user approval.`;
@@ -97,6 +99,7 @@ function normalizeAdoWorkItem(raw) {
   const title = raw.title || fields['System.Title'] || '';
   const description = raw.description || fields['System.Description'] || '';
   const acceptanceCriteria = raw.acceptanceCriteria || fields['Microsoft.VSTS.Common.AcceptanceCriteria'] || '';
+  const manualSteps = raw.manualSteps || raw.manual_steps || fields.ManualSteps || fields['Custom.ManualSteps'] || '';
   const workItemType = raw.workItemType || fields['System.WorkItemType'] || '';
   const state = raw.state || fields['System.State'] || '';
   const tags = raw.tags || fields['System.Tags'] || '';
@@ -107,6 +110,7 @@ function normalizeAdoWorkItem(raw) {
     title: stripHtml(title),
     description: stripHtml(description),
     acceptanceCriteria: stripHtml(acceptanceCriteria),
+    manualSteps: stripHtml(manualSteps),
     workItemType: stripHtml(workItemType),
     state: stripHtml(state),
     tags: stripHtml(tags),
@@ -225,7 +229,38 @@ function tableRows(rows, fallback) {
   return rows.join('\n');
 }
 
-function buildMarkdown({ storyId, title, description, acceptanceCriteria, implementationNotes, components, sourceUrl, adoWorkItem }) {
+function buildManualStepsSection(manualSteps) {
+  const trimmed = String(manualSteps || '').trim();
+  const manualStepsContent = trimmed || 'No manual steps were provided. Confirm with developer/release owner before publishing.';
+  const notVisibleReason = trimmed
+    ? 'These steps are user-provided delivery context and may involve org setup, release coordination, data preparation, permissions, external systems, or validation activities that are not fully represented by Salesforce metadata files.'
+    : 'No user-provided manual steps were captured during draft generation.';
+
+  return `## 14. Manual Implementation / Configuration Steps
+
+### User-provided manual steps
+
+${manualStepsContent}
+
+### Why these steps are not visible in metadata
+
+${notVisibleReason}
+
+### Owner / timing
+
+- Owner: Requires confirmation from developer, admin, release owner, or QA.
+- Timing: Requires confirmation before deployment approval or Azure Wiki publishing.
+
+### Validation checklist
+
+- [ ] Manual steps were reviewed by the implementation owner.
+- [ ] Manual steps do not include secrets, tokens, passwords, or private credentials.
+- [ ] Required admin or release owner actions are clear.
+- [ ] Any data, permission, or external system steps have an owner and timing.
+- [ ] Manual validation evidence is captured before publishing.`;
+}
+
+function buildMarkdown({ storyId, title, description, acceptanceCriteria, implementationNotes, manualSteps, components, sourceUrl, adoWorkItem }) {
   const today = new Date().toISOString().slice(0, 10);
   const reference = storyId || 'Missing - generated as draft';
   const acItems = splitAcceptanceCriteria(acceptanceCriteria);
@@ -352,14 +387,16 @@ ${components.some((c) => ['Layout', 'Lightning Page', 'Lightning Web Component',
 | Regression | Repeat existing valid behavior around the same object and fields. | Existing valid behavior continues working. | AC3 |
 | Permission/security | Test with expected user personas. | Access and behavior match the intended permission model. | Requires Review |
 
-## 14. Deployment Notes
+${buildManualStepsSection(manualSteps)}
+
+## 15. Deployment Notes
 
 - Confirm all listed metadata components are included in the deployment scope.
 - Confirm dependencies before deployment.
 - Run relevant Apex, LWC, lint, scanner, and validate-only checks as appropriate.
 - Do not deploy from this documentation workflow.
 
-## 15. Risks, Assumptions, and Open Questions
+## 16. Risks, Assumptions, and Open Questions
 
 ### Risks
 
@@ -367,12 +404,14 @@ ${components.some((c) => ['Layout', 'Lightning Page', 'Lightning Web Component',
 |---|---|---|
 | Metadata relevance is keyword-based | Relevant components may be missed | Review changed files and known implementation notes manually |
 | Coverage requires review | Documentation may overstate implementation support | Validate every Acceptance Criterion with a human reviewer |
+| Manual steps may be incomplete | Deployment or validation context may be missed | Confirm user-provided manual steps with developer, admin, release owner, or QA |
 
 ### Assumptions
 
 | Assumption | Reason | Requires Confirmation |
 |---|---|---|
 | Listed components are related to the User Story | They matched story keywords, changed files, or metadata content | Yes |
+| Manual steps are user-provided delivery context | They are not inferred from metadata | ${manualSteps ? 'No' : 'Yes'} |
 
 ### Open Questions
 
@@ -380,12 +419,14 @@ ${components.some((c) => ['Layout', 'Lightning Page', 'Lightning Web Component',
 |---|---|---|
 | Which components were intentionally changed for this User Story? | Developer | Confirm changed files or commit range |
 | Are all Acceptance Criteria covered by visible metadata? | Developer / QA | Validate against implementation and tests |
+| Are there manual implementation, configuration, permission, data, deployment, or validation steps not visible in metadata? | Developer / Admin / Release Owner | ${manualSteps ? 'Manual steps were provided and should be reviewed.' : 'No manual steps were provided during draft generation.'} |
 
-## 16. Review Checklist
+## 17. Review Checklist
 
 - [ ] User Story reference is correct
 - [ ] Acceptance Criteria are listed
 - [ ] Relevant metadata components are listed
+- [ ] Manual implementation/configuration steps are reviewed or explicitly marked as not required
 - [ ] Technical behavior is clear
 - [ ] Unsupported assumptions are clearly marked
 - [ ] Testing scenarios are included
@@ -393,7 +434,7 @@ ${components.some((c) => ['Layout', 'Lightning Page', 'Lightning Web Component',
 - [ ] Deployment notes are reviewed
 - [ ] Documentation approved for Azure Wiki
 
-## 17. Change Log
+## 18. Change Log
 
 | Date | Author | Change |
 |---|---|---|
@@ -438,6 +479,11 @@ function main() {
     : hasArg(args, 'acceptance-criteria-file')
       ? readOptionalFile(args['acceptance-criteria-file'])
       : adoWorkItem.acceptanceCriteria || '';
+  const manualSteps = hasArg(args, 'manual-steps')
+    ? args['manual-steps']
+    : hasArg(args, 'manual-steps-file')
+      ? readOptionalFile(args['manual-steps-file'])
+      : adoWorkItem.manualSteps || '';
   const implementationNotes = args['implementation-notes'] || readOptionalFile(args['implementation-notes-file']);
   const forceAppPath = args['force-app-path'] || config.forceAppPath || 'force-app';
   const wikiRepoPath = args['wiki-repo-path'] || config.wikiRepoPath || DEFAULT_WIKI_REPO_PATH;
@@ -450,7 +496,7 @@ function main() {
     process.exit(1);
   }
 
-  const keywords = extractKeywords(title, description, acceptanceCriteria, implementationNotes, changedFiles.join(' '));
+  const keywords = extractKeywords(title, description, acceptanceCriteria, implementationNotes, manualSteps, changedFiles.join(' '));
   const components = findRelevantComponents(forceAppPath, keywords, changedFiles);
   const folderName = storyId || `draft-${kebabCase(title)}`;
   const fileName = `${storyId || 'draft'}-${kebabCase(title)}.md`;
@@ -471,6 +517,7 @@ function main() {
     description,
     acceptanceCriteria,
     implementationNotes,
+    manualSteps,
     components,
     sourceUrl: adoWorkItem.url,
     adoWorkItem,
@@ -485,6 +532,7 @@ function main() {
     console.log(`Description found: ${description ? 'yes' : 'no'}`);
     console.log(`Acceptance Criteria found: ${acceptanceCriteria ? 'yes' : 'no'}`);
   }
+  console.log(`Manual steps provided: ${manualSteps ? 'yes' : 'no'}`);
   console.log(`Relevant metadata components detected: ${components.length}`);
   console.log('Review the generated Markdown file.');
   console.log('To approve publishing to Azure Wiki, reply exactly: APPROVE WIKI PUSH');

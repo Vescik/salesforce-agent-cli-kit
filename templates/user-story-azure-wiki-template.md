@@ -73,9 +73,32 @@ Explain the implementation in developer-friendly language.
 | Negative path | <Steps> | <Expected result> | AC2 |
 | Regression | <Steps> | <Expected result> | AC3 |
 
-## 14. Deployment Notes
+## 14. Manual Implementation / Configuration Steps
 
-## 15. Risks, Assumptions, and Open Questions
+### User-provided manual steps
+
+<Manual steps provided by developer, admin, release owner, or QA. If none were provided, state that explicitly.>
+
+### Why these steps are not visible in metadata
+
+<Explain whether these steps involve org setup, permissions, data preparation, external systems, release coordination, or validation outside `force-app/`.>
+
+### Owner / timing
+
+- Owner: <Developer / Admin / Release Owner / QA>
+- Timing: <Before deployment / during deployment / after deployment / before publishing>
+
+### Validation checklist
+
+- [ ] Manual steps were reviewed by the implementation owner.
+- [ ] Manual steps do not include secrets, tokens, passwords, or private credentials.
+- [ ] Required admin or release owner actions are clear.
+- [ ] Any data, permission, or external system steps have an owner and timing.
+- [ ] Manual validation evidence is captured before publishing.
+
+## 15. Deployment Notes
+
+## 16. Risks, Assumptions, and Open Questions
 
 ### Risks
 
@@ -92,11 +115,12 @@ Explain the implementation in developer-friendly language.
 | Question | Owner | Notes |
 |---|---|---|
 
-## 16. Review Checklist
+## 17. Review Checklist
 
 - [ ] User Story reference is correct
 - [ ] Acceptance Criteria are listed
 - [ ] Relevant metadata components are listed
+- [ ] Manual implementation/configuration steps are reviewed or explicitly marked as not required
 - [ ] Technical behavior is clear
 - [ ] Unsupported assumptions are clearly marked
 - [ ] Testing scenarios are included
@@ -104,7 +128,7 @@ Explain the implementation in developer-friendly language.
 - [ ] Deployment notes are reviewed
 - [ ] Documentation approved for Azure Wiki
 
-## 17. Change Log
+## 18. Change Log
 
 | Date | Author | Change |
 |---|---|---|

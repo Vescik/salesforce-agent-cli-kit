@@ -64,12 +64,14 @@ If no User Story ID is provided, generate a safe file name from the title and ma
 4. Analyze metadata under `force-app/`.
 5. Identify relevant components and artifacts.
 6. Map components to Acceptance Criteria.
-7. Generate Azure Wiki documentation in Markdown using the template below.
-8. Run Markdown quality review using `.github/skills/markdown-quality-review.md`.
-9. Save the draft into the configured Azure Wiki repo path.
-10. Present the generated file path, summary, assumptions, and open questions to the user.
-11. Apply requested review changes.
-12. Commit and push only after explicit user approval, such as `APPROVE WIKI PUSH`.
+7. Ask whether there are manual implementation, configuration, deployment, permission, data, or validation steps not visible in metadata.
+8. If manual steps exist, capture them as user-provided delivery context.
+9. Generate Azure Wiki documentation in Markdown using the template below.
+10. Run Markdown quality review using `.github/skills/markdown-quality-review.md`.
+11. Save the draft into the configured Azure Wiki repo path.
+12. Present the generated file path, summary, manual steps status, assumptions, and open questions to the user.
+13. Apply requested review changes.
+14. Commit and push only after explicit user approval, such as `APPROVE WIKI PUSH`.
 
 ## Safety Rules
 
@@ -212,9 +214,32 @@ Explain the implementation in developer-friendly language.
 | Negative path | <Steps> | <Expected result> | AC2 |
 | Regression | <Steps> | <Expected result> | AC3 |
 
-## 14. Deployment Notes
+## 14. Manual Implementation / Configuration Steps
 
-## 15. Risks, Assumptions, and Open Questions
+### User-provided manual steps
+
+<Manual steps provided by developer, admin, release owner, or QA. If none were provided, state that explicitly.>
+
+### Why these steps are not visible in metadata
+
+<Explain whether these steps involve org setup, permissions, data preparation, external systems, release coordination, or validation outside `force-app/`.>
+
+### Owner / timing
+
+- Owner: <Developer / Admin / Release Owner / QA>
+- Timing: <Before deployment / during deployment / after deployment / before publishing>
+
+### Validation checklist
+
+- [ ] Manual steps were reviewed by the implementation owner.
+- [ ] Manual steps do not include secrets, tokens, passwords, or private credentials.
+- [ ] Required admin or release owner actions are clear.
+- [ ] Any data, permission, or external system steps have an owner and timing.
+- [ ] Manual validation evidence is captured before publishing.
+
+## 15. Deployment Notes
+
+## 16. Risks, Assumptions, and Open Questions
 
 ### Risks
 
@@ -231,11 +256,12 @@ Explain the implementation in developer-friendly language.
 | Question | Owner | Notes |
 |---|---|---|
 
-## 16. Review Checklist
+## 17. Review Checklist
 
 - [ ] User Story reference is correct
 - [ ] Acceptance Criteria are listed
 - [ ] Relevant metadata components are listed
+- [ ] Manual implementation/configuration steps are reviewed or explicitly marked as not required
 - [ ] Technical behavior is clear
 - [ ] Unsupported assumptions are clearly marked
 - [ ] Testing scenarios are included
@@ -243,7 +269,7 @@ Explain the implementation in developer-friendly language.
 - [ ] Deployment notes are reviewed
 - [ ] Documentation approved for Azure Wiki
 
-## 17. Change Log
+## 18. Change Log
 
 | Date | Author | Change |
 |---|---|---|
@@ -315,11 +341,12 @@ Process:
 4. Analyze metadata under `force-app/`.
 5. Identify relevant components and artifacts.
 6. Map components to Acceptance Criteria.
-7. Generate Azure Wiki documentation in Markdown using the required template.
-8. Save the document into the configured Azure Wiki repo path.
-9. Present the draft to the user for review.
-10. Apply requested changes.
-11. Commit and push only after explicit user approval.
+7. Ask for manual implementation, configuration, deployment, permission, data, or validation steps not visible in metadata.
+8. Generate Azure Wiki documentation in Markdown using the required template.
+9. Save the document into the configured Azure Wiki repo path.
+10. Present the draft to the user for review.
+11. Apply requested changes.
+12. Commit and push only after explicit user approval.
 
 Important rules:
 

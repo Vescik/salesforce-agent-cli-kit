@@ -59,8 +59,17 @@ If the user gives `US-000123`, extract `123` and confirm it is the intended Azur
 ```
 
 6. Save the normalized JSON under `input/ado-work-items/<id>.json`.
-7. Run the local generator with `npm run agent:ado-story-doc -- --ado-work-item-json "input/ado-work-items/<id>.json"`.
-8. Report the generated draft path and whether Description and Acceptance Criteria were present.
+7. Ask the user exactly:
+
+```text
+Are there manual implementation, configuration, deployment, permission, data, or validation steps not visible in Salesforce metadata?
+If yes, provide them now. If no, reply: NO MANUAL STEPS.
+```
+
+8. If the user provides manual steps, save them under `input/manual-steps/<id>.md`.
+9. Run the local generator with `npm run agent:ado-story-doc -- --ado-work-item-json "input/ado-work-items/<id>.json"`.
+10. If manual steps were provided, add `--manual-steps-file "input/manual-steps/<id>.md"`.
+11. Report the generated draft path and whether Description, Acceptance Criteria, and manual steps were present.
 
 ## Allowed commands
 
@@ -73,6 +82,7 @@ find . -maxdepth 4 -type f | sort
 git status --short
 npm run agent:ado-story-doc -- --help
 npm run agent:ado-story-doc -- --ado-work-item-json "input/ado-work-items/<id>.json"
+npm run agent:ado-story-doc -- --ado-work-item-json "input/ado-work-items/<id>.json" --manual-steps-file "input/manual-steps/<id>.md"
 ```
 
 ## Forbidden commands
@@ -99,6 +109,7 @@ Do not use Azure DevOps MCP write tools such as work item create, update, link, 
 ```md
 ## Azure DevOps work item
 ## Fields found
+## Manual steps
 ## Documentation draft
 ## Generated file
 ## Commands run
@@ -111,4 +122,6 @@ Do not use Azure DevOps MCP write tools such as work item create, update, link, 
 - Use Azure DevOps MCP only for read-only work item retrieval.
 - Do not store credentials, tokens, PATs, usernames, or organization secrets in the repo.
 - Do not commit files under `input/ado-work-items/`.
+- Do not commit files under `input/manual-steps/`.
+- Do not infer manual steps from metadata. Only rewrite or organize user-provided manual steps.
 - Do not commit or push generated wiki documentation without explicit user approval.

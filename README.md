@@ -78,6 +78,7 @@ Use `.github/agents/` for broad Salesforce development workflows:
 - `salesforce-test-agent.agent.md`
 - `salesforce-deployment-agent.agent.md`
 - `salesforce-documentation-creator-agent.agent.md`
+- `salesforce-user-story-documentation-runner.agent.md`
 
 Developer and Code Review remain separate on purpose: review should classify risk without editing by default, while development is an implementation workflow.
 
@@ -99,12 +100,38 @@ Use `agents/` for Azure Wiki and Salesforce metadata documentation workflows:
    - implementation: Developer Agent
    - tests/CI: Test Agent
    - release: Deployment Agent
-   - docs/wiki: Documentation Creator or Refactor Documentation Agent
+   - docs/wiki: Documentation Creator, Refactor Documentation Agent, or User Story Documentation Runner
 5. Keep repo-specific configuration in `config.json`.
 
 ## How To Generate User Story Azure Wiki Documentation
 
 After configuring `config.json`, run:
+
+```bash
+npm run agent:story-doc -- \
+  --story-id "US-000123" \
+  --title "Prevent invoice status from changing unexpectedly" \
+  --description-file "input/story-description.md" \
+  --acceptance-criteria-file "input/acceptance-criteria.md"
+```
+
+In GitHub Copilot Chat, use:
+
+```text
+Use Salesforce User Story Documentation Runner.
+
+User Story ID: US-000123
+Title: Prevent invoice status from changing unexpectedly
+Description file: input/story-description.md
+Acceptance Criteria file: input/acceptance-criteria.md
+
+Run the local documentation generator and create the Azure Wiki draft.
+Do not commit or push.
+```
+
+The runner agent should execute the npm command for you after checking `config.json`.
+
+Equivalent direct command:
 
 ```bash
 npm run generate:story-doc -- \
@@ -142,6 +169,7 @@ Publishing requires explicit approval and should follow `skills/git-wiki-publish
 ```bash
 npm run scan
 npm run generate
+npm run agent:story-doc -- --help
 npm run generate:story-doc -- --help
 npm run validate
 ```

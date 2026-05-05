@@ -8,6 +8,7 @@
     "generate": "node scripts/generate-docs.js",
     "generate:story-doc": "node scripts/generate-user-story-doc.js",
     "agent:story-doc": "node scripts/generate-user-story-doc.js --config config.json",
+    "agent:ado-story-doc": "node scripts/generate-user-story-doc.js --config config.json",
     "validate": "node scripts/validate-output.js"
   },
   "keywords": [],

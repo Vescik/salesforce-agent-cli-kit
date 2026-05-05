@@ -82,5 +82,6 @@ Use:
 - Use Salesforce Deployment Agent for package scope, validate-only planning, release notes, rollback notes, and deployment checklists.
 - Use Salesforce Documentation Creator Agent for Azure Wiki pages, user story context, metadata summaries, release notes, and handoff docs.
 - Use Refactor Documentation Agent for Salesforce User Story Azure Wiki documentation generated from User Story details and local `force-app/` metadata.
+- Use Azure DevOps User Story Fetcher when the user provides a numeric Azure DevOps Work Item ID and wants Description and Acceptance Criteria fetched through read-only Azure DevOps MCP before documentation generation.
 
 Keep Developer Agent separate from Code Review Agent. Review tasks should not edit files by default; implementation tasks may edit files only when requested.

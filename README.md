@@ -19,6 +19,33 @@ This repository is a single, flat agent workspace for Salesforce projects. It in
 
 The repo is intentionally generic. It does not contain org aliases, credentials, customer names, private URLs, tokens, or deployment targets.
 
+## Azure DevOps MCP Setup
+
+For automatic User Story fetching, use VS Code + GitHub Copilot Agent Mode with the official Azure DevOps MCP server.
+
+Copy the example MCP configuration:
+
+```bash
+mkdir -p .vscode
+cp .vscode/mcp.example.json .vscode/mcp.json
+```
+
+Then open VS Code, start GitHub Copilot Chat in Agent Mode, and authenticate with the Azure DevOps organization when prompted.
+
+The MCP config loads only these Azure DevOps domains:
+
+- `core`
+- `work`
+- `work-items`
+
+This repo treats Azure DevOps MCP as read-only for User Story fetching. Do not commit `.vscode/mcp.json`, tokens, PATs, organization secrets, or cached work item data.
+
+References:
+
+- [Azure DevOps MCP remote setup](https://learn.microsoft.com/en-us/azure/devops/mcp-server/remote-mcp-server)
+- [Microsoft Azure DevOps MCP server](https://github.com/microsoft/azure-devops-mcp)
+- [Azure DevOps Work Items REST API](https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/get-work-item)
+
 ## Repository Structure
 
 ```text
@@ -79,6 +106,7 @@ Use `.github/agents/` for broad Salesforce development workflows:
 - `salesforce-deployment-agent.agent.md`
 - `salesforce-documentation-creator-agent.agent.md`
 - `salesforce-user-story-documentation-runner.agent.md`
+- `azure-devops-user-story-fetcher.agent.md`
 
 Developer and Code Review remain separate on purpose: review should classify risk without editing by default, while development is an implementation workflow.
 
@@ -100,8 +128,50 @@ Use `agents/` for Azure Wiki and Salesforce metadata documentation workflows:
    - implementation: Developer Agent
    - tests/CI: Test Agent
    - release: Deployment Agent
-   - docs/wiki: Documentation Creator, Refactor Documentation Agent, or User Story Documentation Runner
+   - docs/wiki: Documentation Creator, Refactor Documentation Agent, User Story Documentation Runner, or Azure DevOps User Story Fetcher
 5. Keep repo-specific configuration in `config.json`.
+
+## How To Generate Docs From Azure DevOps User Story ID
+
+Use this when you only know the numeric Azure DevOps Work Item ID.
+
+In GitHub Copilot Chat:
+
+```text
+Use Azure DevOps User Story Fetcher.
+
+Work Item ID: 12345
+
+Fetch Description and Acceptance Criteria from Azure DevOps, then generate Azure Wiki documentation draft.
+Do not commit or push.
+```
+
+The agent should:
+
+1. Fetch the Work Item through Azure DevOps MCP read-only tools.
+2. Normalize the Work Item into `input/ado-work-items/12345.json`.
+3. Run:
+
+```bash
+npm run agent:ado-story-doc -- --ado-work-item-json "input/ado-work-items/12345.json"
+```
+
+Expected normalized JSON shape:
+
+```json
+{
+  "id": 12345,
+  "title": "Example title",
+  "description": "User Story description",
+  "acceptanceCriteria": "Acceptance Criteria",
+  "workItemType": "User Story",
+  "state": "Active",
+  "tags": "salesforce",
+  "url": "https://dev.azure.com/<organization>/<project>/_workitems/edit/12345"
+}
+```
+
+Files under `input/ado-work-items/` are ignored by Git.
 
 ## How To Generate User Story Azure Wiki Documentation
 
@@ -170,6 +240,7 @@ Publishing requires explicit approval and should follow `skills/git-wiki-publish
 npm run scan
 npm run generate
 npm run agent:story-doc -- --help
+npm run agent:ado-story-doc -- --help
 npm run generate:story-doc -- --help
 npm run validate
 ```

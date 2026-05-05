@@ -3,6 +3,7 @@ const path = require('path');
 
 const requiredPaths = [
   '.github/copilot-instructions.md',
+  '.github/agents/azure-devops-user-story-fetcher.agent.md',
   'agents/salesforce-metadata-documentation-agent.md',
   'agents/refactor-documentation-agent.md',
   'agents/subagents/salesforce-metadata-analysis-agent.md',
@@ -13,6 +14,7 @@ const requiredPaths = [
   'scripts/generate-docs.js',
   'scripts/generate-user-story-doc.js',
   'scripts/validate-output.js',
+  '.vscode/mcp.example.json',
   'output',
   'output/azure-wiki',
   'output/user-stories',

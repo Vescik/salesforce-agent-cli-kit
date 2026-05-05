@@ -1,0 +1,24 @@
+{
+  "inputs": [
+    {
+      "id": "ado_org",
+      "type": "promptString",
+      "description": "Azure DevOps organization name, for example contoso"
+    }
+  ],
+  "servers": {
+    "ado_work_items": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@azure-devops/mcp",
+        "${input:ado_org}",
+        "-d",
+        "core",
+        "work",
+        "work-items"
+      ]
+    }
+  }
+}

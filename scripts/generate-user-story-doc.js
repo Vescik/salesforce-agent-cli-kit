@@ -26,6 +26,7 @@ function usage() {
 node scripts/generate-user-story-doc.js \\
   --story-id "US-000123" \\
   --title "Prevent invoice status from changing unexpectedly" \\
+  --ado-work-item-json "input/ado-work-items/12345.json" \\
   --description-file "input/story-description.md" \\
   --acceptance-criteria-file "input/acceptance-criteria.md" \\
   --force-app-path "force-app" \\
@@ -37,6 +38,7 @@ Optional:
 
 Notes:
 - Copy config.example.json to config.json for local repo paths.
+- Use --ado-work-item-json for normalized Azure DevOps Work Item data fetched by the Azure DevOps User Story Fetcher agent.
 - The wiki repo path must already exist.
 - Existing documentation is not overwritten. A proposed update file is created instead.
 - This script does not commit or push. Publishing requires explicit user approval.`;
@@ -49,12 +51,67 @@ function readConfig(configPath) {
   return JSON.parse(raw);
 }
 
+function readJsonFile(filePath) {
+  if (!filePath) return {};
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`JSON file does not exist: ${filePath}`);
+  }
+  const raw = fs.readFileSync(filePath, 'utf8');
+  return JSON.parse(raw);
+}
+
 function readOptionalFile(filePath) {
   if (!filePath) return '';
   if (!fs.existsSync(filePath)) {
     throw new Error(`Input file does not exist: ${filePath}`);
   }
   return fs.readFileSync(filePath, 'utf8').trim();
+}
+
+function hasArg(args, key) {
+  return Object.prototype.hasOwnProperty.call(args, key);
+}
+
+function stripHtml(value) {
+  return String(value || '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<\/div>/gi, '\n')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<li>/gi, '- ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function normalizeAdoWorkItem(raw) {
+  if (!raw || Object.keys(raw).length === 0) return {};
+  const fields = raw.fields || {};
+  const id = raw.id || fields['System.Id'] || '';
+  const title = raw.title || fields['System.Title'] || '';
+  const description = raw.description || fields['System.Description'] || '';
+  const acceptanceCriteria = raw.acceptanceCriteria || fields['Microsoft.VSTS.Common.AcceptanceCriteria'] || '';
+  const workItemType = raw.workItemType || fields['System.WorkItemType'] || '';
+  const state = raw.state || fields['System.State'] || '';
+  const tags = raw.tags || fields['System.Tags'] || '';
+  const url = raw.url || raw._links?.html?.href || '';
+
+  return {
+    id: id ? String(id) : '',
+    title: stripHtml(title),
+    description: stripHtml(description),
+    acceptanceCriteria: stripHtml(acceptanceCriteria),
+    workItemType: stripHtml(workItemType),
+    state: stripHtml(state),
+    tags: stripHtml(tags),
+    url,
+  };
 }
 
 function kebabCase(value) {
@@ -168,7 +225,7 @@ function tableRows(rows, fallback) {
   return rows.join('\n');
 }
 
-function buildMarkdown({ storyId, title, description, acceptanceCriteria, implementationNotes, components }) {
+function buildMarkdown({ storyId, title, description, acceptanceCriteria, implementationNotes, components, sourceUrl, adoWorkItem }) {
   const today = new Date().toISOString().slice(0, 10);
   const reference = storyId || 'Missing - generated as draft';
   const acItems = splitAcceptanceCriteria(acceptanceCriteria);
@@ -190,7 +247,10 @@ function buildMarkdown({ storyId, title, description, acceptanceCriteria, implem
 |---|---|
 | User Story ID | ${reference} |
 | Title | ${title || 'Requires confirmation'} |
-| Source / Link | Requires confirmation |
+| Source / Link | ${sourceUrl || 'Requires confirmation'} |
+| Azure DevOps Type | ${adoWorkItem.workItemType || 'Requires confirmation'} |
+| Azure DevOps State | ${adoWorkItem.state || 'Requires confirmation'} |
+| Azure DevOps Tags | ${adoWorkItem.tags || 'Requires confirmation'} |
 | Documentation Status | Draft |
 | Created By | Documentation Agent |
 | Created Date | ${today} |
@@ -365,10 +425,19 @@ function main() {
   }
 
   const config = readConfig(args.config);
-  const title = args.title || 'Untitled User Story';
-  const storyId = args['story-id'] || '';
-  const description = args.description || readOptionalFile(args['description-file']);
-  const acceptanceCriteria = args['acceptance-criteria'] || readOptionalFile(args['acceptance-criteria-file']);
+  const adoWorkItem = normalizeAdoWorkItem(readJsonFile(args['ado-work-item-json']));
+  const title = hasArg(args, 'title') ? args.title : adoWorkItem.title || 'Untitled User Story';
+  const storyId = hasArg(args, 'story-id') ? args['story-id'] : adoWorkItem.id || '';
+  const description = hasArg(args, 'description')
+    ? args.description
+    : hasArg(args, 'description-file')
+      ? readOptionalFile(args['description-file'])
+      : adoWorkItem.description || '';
+  const acceptanceCriteria = hasArg(args, 'acceptance-criteria')
+    ? args['acceptance-criteria']
+    : hasArg(args, 'acceptance-criteria-file')
+      ? readOptionalFile(args['acceptance-criteria-file'])
+      : adoWorkItem.acceptanceCriteria || '';
   const implementationNotes = args['implementation-notes'] || readOptionalFile(args['implementation-notes-file']);
   const forceAppPath = args['force-app-path'] || config.forceAppPath || 'force-app';
   const wikiRepoPath = args['wiki-repo-path'] || config.wikiRepoPath || DEFAULT_WIKI_REPO_PATH;
@@ -403,12 +472,19 @@ function main() {
     acceptanceCriteria,
     implementationNotes,
     components,
+    sourceUrl: adoWorkItem.url,
+    adoWorkItem,
   });
 
   fs.writeFileSync(targetFile, markdown);
 
   console.log('Documentation draft generated.');
   console.log(`File: ${targetFile}`);
+  if (adoWorkItem.id) {
+    console.log(`Azure DevOps Work Item: ${adoWorkItem.id}`);
+    console.log(`Description found: ${description ? 'yes' : 'no'}`);
+    console.log(`Acceptance Criteria found: ${acceptanceCriteria ? 'yes' : 'no'}`);
+  }
   console.log(`Relevant metadata components detected: ${components.length}`);
   console.log('Review the generated Markdown file.');
   console.log('To approve publishing to Azure Wiki, reply exactly: APPROVE WIKI PUSH');

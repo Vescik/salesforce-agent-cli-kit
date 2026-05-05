@@ -4,6 +4,8 @@ This repository is an OOTB-ready Salesforce DX agent workspace for GitHub Copilo
 
 Use `AGENTS.md` for global safety rules. Use focused files in `.github/agents`, `.github/instructions`, `.github/skills`, `.github/prompts`, `agents`, `skills`, `prompts`, and `templates` for detailed workflows.
 
+This project can use Azure DevOps MCP in VS Code. When the user asks for Azure DevOps Work Item or User Story data, first check whether an Azure DevOps MCP read-only work item tool is available before asking the user to paste Description or Acceptance Criteria.
+
 ## Core Behavior
 
 - Always inspect the repository before suggesting changes.
@@ -16,6 +18,7 @@ Use `AGENTS.md` for global safety rules. Use focused files in `.github/agents`, 
 - If metadata is unclear, mark uncertainty clearly instead of guessing.
 - Do not modify Salesforce metadata unless the user explicitly asks for implementation.
 - Do not deploy to production or run destructive commands without explicit approval.
+- Use Azure DevOps MCP only for read-only fetches unless the user explicitly requests a write action and the relevant safety policy allows it.
 
 ## Salesforce DX Inspection
 

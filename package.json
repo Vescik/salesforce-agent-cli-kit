@@ -6,7 +6,9 @@
   "scripts": {
     "scan": "node scripts/scan-force-app.js",
     "generate": "node scripts/generate-docs.js",
+    "generate:how-to-test": "node scripts/generate-how-to-test-docx.js",
     "generate:story-doc": "node scripts/generate-user-story-doc.js",
+    "agent:how-to-test": "node scripts/generate-how-to-test-docx.js --config config.json",
     "agent:story-doc": "node scripts/generate-user-story-doc.js --config config.json",
     "agent:ado-story-doc": "node scripts/generate-user-story-doc.js --config config.json",
     "validate": "node scripts/validate-output.js"
@@ -14,5 +16,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "docx": "^9.6.1"
+  }
 }

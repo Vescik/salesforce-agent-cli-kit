@@ -4,6 +4,7 @@ const path = require('path');
 const requiredPaths = [
   '.github/copilot-instructions.md',
   '.github/agents/azure-devops-user-story-fetcher.agent.md',
+  '.github/agents/salesforce-test-docx-creator.agent.md',
   '.github/agents/salesforce-metadata-documentation-agent.md',
   '.github/agents/refactor-documentation-agent.md',
   '.github/agents/subagents/salesforce-metadata-analysis-agent.md',
@@ -12,6 +13,7 @@ const requiredPaths = [
   'templates',
   'scripts/scan-force-app.js',
   'scripts/generate-docs.js',
+  'scripts/generate-how-to-test-docx.js',
   'scripts/generate-user-story-doc.js',
   'scripts/validate-output.js',
   '.vscode/mcp.example.json',
@@ -19,6 +21,7 @@ const requiredPaths = [
   'output/azure-wiki',
   'output/user-stories',
   'output/metadata-analysis',
+  'output/test-docs',
   'output/user-stories/user-story-context.md',
   'output/metadata-analysis/metadata-summary.md',
   'output/metadata-analysis/change-summary.md',
@@ -49,6 +52,7 @@ const requiredPromptFiles = [
 
 const requiredTemplateFiles = [
   'templates/azure-wiki-page-template.md',
+  'templates/how-to-test-docx-template.md',
   'templates/user-story-azure-wiki-template.md',
   'templates/metadata-component-summary-template.md',
 ];

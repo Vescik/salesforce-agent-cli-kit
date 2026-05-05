@@ -1,5 +1,6 @@
 {
   "forceAppPath": "force-app",
   "wikiRepoPath": "../azure-wiki-repo",
-  "wikiDocsPath": "User-Stories"
+  "wikiDocsPath": "User-Stories",
+  "testDocsOutputPath": "output/test-docs"
 }

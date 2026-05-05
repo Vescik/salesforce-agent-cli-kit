@@ -82,7 +82,8 @@ cp config.example.json config.json
 {
   "forceAppPath": "force-app",
   "wikiRepoPath": "../azure-wiki-repo",
-  "wikiDocsPath": "User-Stories"
+  "wikiDocsPath": "User-Stories",
+  "testDocsOutputPath": "output/test-docs"
 }
 ```
 
@@ -99,6 +100,7 @@ Use `.github/agents/` for Salesforce development, Azure Wiki documentation, and 
 - `salesforce-code-review-agent.agent.md`
 - `salesforce-developer-agent.agent.md`
 - `salesforce-metadata-documentation-agent.md`
+- `salesforce-test-docx-creator.agent.md`
 - `salesforce-test-agent.agent.md`
 - `salesforce-deployment-agent.agent.md`
 - `salesforce-documentation-creator-agent.agent.md`
@@ -122,6 +124,7 @@ Use `.github/skills/` and `.github/prompts/` for all reusable workflow instructi
    - tests/CI: Test Agent
    - release: Deployment Agent
    - docs/wiki: Documentation Creator, Refactor Documentation Agent, User Story Documentation Runner, or Azure DevOps User Story Fetcher
+   - tester docs: Salesforce Test DOCX Creator
 5. Keep repo-specific configuration in `config.json`.
 
 ## How To Generate Docs From Azure DevOps User Story ID
@@ -247,11 +250,54 @@ The script:
 
 Publishing requires explicit approval and should follow `.github/skills/git-wiki-publish.md`.
 
+## How To Generate HOW_TO_TEST DOCX For Testers
+
+Use this when testers need a Word document generated from User Story Description and Acceptance Criteria.
+
+From Azure DevOps JSON:
+
+```bash
+npm run agent:how-to-test -- --ado-work-item-json "input/ado-work-items/12345.json"
+```
+
+From local inputs:
+
+```bash
+npm run agent:how-to-test -- \
+  --story-id "US-000123" \
+  --title "Prevent invoice status from changing unexpectedly" \
+  --description-file "input/story-description.md" \
+  --acceptance-criteria-file "input/acceptance-criteria.md"
+```
+
+The output file is written to:
+
+```text
+output/test-docs/HOW_TO_TEST_US-000123.docx
+```
+
+The DOCX includes User Story reference, business summary, Acceptance Criteria, preconditions, test cases per AC, negative and regression checklist, manual validation checklist, risks/open questions, and tester sign-off placeholders.
+
+In GitHub Copilot Chat:
+
+```text
+Use Salesforce Test DOCX Creator.
+
+User Story ID: US-000123
+Title: Prevent invoice status from changing unexpectedly
+Description file: input/story-description.md
+Acceptance Criteria file: input/acceptance-criteria.md
+
+Generate HOW_TO_TEST DOCX for testers.
+Do not commit or push.
+```
+
 ## Scripts
 
 ```bash
 npm run scan
 npm run generate
+npm run agent:how-to-test -- --help
 npm run agent:story-doc -- --help
 npm run agent:ado-story-doc -- --help
 npm run generate:story-doc -- --help

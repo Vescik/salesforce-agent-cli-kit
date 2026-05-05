@@ -1,102 +1,173 @@
 # Salesforce Agent CLI Kit
 
-## What this repo is
-
-A reusable Salesforce AI Agent Toolkit for Salesforce DX repositories. It packages global agent rules, GitHub Copilot instructions, custom agents, reusable skills, standalone prompts, research notes, and safe helper scripts for Salesforce review, creation, and validation workflows.
-
-The kit is intentionally generic. It does not contain org aliases, credentials, customer names, object-specific assumptions, or deployment targets.
-
-## Creator
+OOTB-ready GitHub Copilot/Codex agent package for Salesforce DX delivery teams.
 
 Created by Dominik Machowski.
 
-## Who it is for
+## Purpose
 
-- Salesforce developers reviewing Apex, Flow, LWC, metadata, and permissions.
-- Technical architects standardizing agent-assisted Salesforce delivery.
-- Teams using VS Code, GitHub Copilot, or CLI-based agents on Salesforce DX projects.
-- Release owners who need repeatable validate-only deployment workflows.
+This repository is a single, flat agent workspace for Salesforce projects. It includes:
 
-## How to use with GitHub Copilot
+- GitHub Copilot instructions
+- custom agent definitions
+- reusable skills
+- copy-paste prompts
+- Azure Wiki documentation templates
+- Node.js helper scripts
+- placeholder output folders
+- safe Salesforce DX review, test, deployment, and documentation workflows
 
-Copy this repository's `.github` folder into a Salesforce DX repository, or keep this repo as a reference library and copy only the agents, skills, prompts, and instructions you need.
+The repo is intentionally generic. It does not contain org aliases, credentials, customer names, private URLs, tokens, or deployment targets.
 
-Recommended Copilot layers:
+## Repository Structure
 
-- `.github/copilot-instructions.md` for repository-wide Salesforce guidance.
-- `.github/instructions/*.instructions.md` for focused always-on rules.
-- `.github/agents/*.agent.md` for specialist custom agents.
-- `.github/skills/*/SKILL.md` for reusable workflows.
-- `.github/prompts/*.prompt.md` for copy-paste-ready task templates.
+```text
+.
+├── .github/
+│   ├── agents/
+│   ├── instructions/
+│   ├── prompts/
+│   ├── skills/
+│   └── copilot-instructions.md
+├── agents/
+│   ├── refactor-documentation-agent.md
+│   ├── salesforce-metadata-documentation-agent.md
+│   └── subagents/
+├── skills/
+├── prompts/
+├── templates/
+├── scripts/
+├── output/
+├── docs/
+├── config.example.json
+├── package.json
+├── AGENTS.md
+└── README.md
+```
 
-## How to use with VS Code and GitHub Copilot
+There is no nested workspace folder. Everything is available from the repository root.
 
-Use this repository as a reusable instruction, agent, skill, and prompt library for Salesforce work in VS Code.
+## Configuration
 
-1. Open your Salesforce DX project in VS Code.
-2. Use GitHub Copilot Chat or a GitHub Copilot coding agent with the relevant files from this kit.
-3. Start tasks by inspecting the target Salesforce DX repo.
-4. Classify commands by safety before suggesting or running them.
-5. Select the relevant skill from `.github/skills` or prompt from `.github/prompts`.
+Copy the example config and edit local paths:
 
-## How to use agents
+```bash
+cp config.example.json config.json
+```
 
-Use the smallest agent role that fits the task:
+`config.json` is ignored by Git. Use it for local values such as:
 
-- `salesforce-code-review-agent.agent.md` for Apex, Flow, LWC, metadata, permissions, security, dependency, and deployment-risk review.
-- `salesforce-developer-agent.agent.md` for implementation across Apex, Flow metadata, LWC, metadata XML, scripts, and docs.
-- `salesforce-test-agent.agent.md` for Apex tests, LWC tests, lint, scanner, CI checks, and validation evidence.
-- `salesforce-deployment-agent.agent.md` for package scope, validate-only planning, release notes, rollback notes, and deployment checklists.
-- `salesforce-documentation-creator-agent.agent.md` for Azure Wiki pages, user story context, metadata summaries, release notes, and handoff documentation.
+```json
+{
+  "forceAppPath": "force-app",
+  "wikiRepoPath": "../azure-wiki-repo",
+  "wikiDocsPath": "User-Stories"
+}
+```
+
+The Azure Wiki repo path must already exist before generating wiki drafts.
+
+## Main Agent Groups
+
+### GitHub Copilot Custom Agents
+
+Use `.github/agents/` for broad Salesforce development workflows:
+
+- `salesforce-code-review-agent.agent.md`
+- `salesforce-developer-agent.agent.md`
+- `salesforce-test-agent.agent.md`
+- `salesforce-deployment-agent.agent.md`
+- `salesforce-documentation-creator-agent.agent.md`
 
 Developer and Code Review remain separate on purpose: review should classify risk without editing by default, while development is an implementation workflow.
 
-## Salesforce Admin Read-Only Agents
+### User Story Documentation Agents
 
-The admin read-only agents, skills, prompts, and docs were moved to a dedicated repository:
+Use `agents/` for Azure Wiki and Salesforce metadata documentation workflows:
+
+- `agents/refactor-documentation-agent.md`
+- `agents/salesforce-metadata-documentation-agent.md`
+- `agents/subagents/salesforce-metadata-analysis-agent.md`
+
+## How To Use With VS Code And GitHub Copilot
+
+1. Open this repository or copy its files into a Salesforce DX project.
+2. Open VS Code and GitHub Copilot Chat.
+3. Reference `.github/copilot-instructions.md` and `AGENTS.md`.
+4. Choose the smallest matching agent:
+   - review: Code Review Agent
+   - implementation: Developer Agent
+   - tests/CI: Test Agent
+   - release: Deployment Agent
+   - docs/wiki: Documentation Creator or Refactor Documentation Agent
+5. Keep repo-specific configuration in `config.json`.
+
+## How To Generate User Story Azure Wiki Documentation
+
+After configuring `config.json`, run:
+
+```bash
+npm run generate:story-doc -- \
+  --story-id "US-000123" \
+  --title "Prevent invoice status from changing unexpectedly" \
+  --description-file "input/story-description.md" \
+  --acceptance-criteria-file "input/acceptance-criteria.md"
+```
+
+Or pass paths directly:
+
+```bash
+node scripts/generate-user-story-doc.js \
+  --story-id "US-000123" \
+  --title "Prevent invoice status from changing unexpectedly" \
+  --description-file "input/story-description.md" \
+  --acceptance-criteria-file "input/acceptance-criteria.md" \
+  --force-app-path "force-app" \
+  --wiki-repo-path "../azure-wiki-repo" \
+  --wiki-docs-path "User-Stories"
+```
+
+The script:
+
+- scans local metadata by keyword
+- creates an Azure Wiki Markdown draft
+- avoids overwriting existing docs
+- does not commit
+- does not push
+
+Publishing requires explicit approval and should follow `skills/git-wiki-publish.md`.
+
+## Scripts
+
+```bash
+npm run scan
+npm run generate
+npm run generate:story-doc -- --help
+npm run validate
+```
+
+Direct commands:
+
+```bash
+node scripts/scan-force-app.js
+node scripts/generate-docs.js
+node scripts/generate-user-story-doc.js --help
+node scripts/validate-output.js
+```
+
+## Safety Rules
+
+- Do not deploy Salesforce metadata unless explicitly requested.
+- Do not run destructive commands.
+- Do not hardcode org aliases, secrets, credentials, usernames, tokens, private URLs, or customer data.
+- Do not claim validation passed unless it was executed.
+- Never commit or push Azure Wiki documentation without explicit user approval.
+- If implementation cannot be inferred from metadata, write `Assumption:` or `Requires confirmation:`.
+
+## Admin Read-Only Agents
+
+Admin read-only agents live in a separate repo:
 
 `https://github.com/Vescik/salesforce-admin-readonly-agents`
 
-Keep this repository focused on developer-oriented Salesforce review, implementation, validation, and metadata documentation workflows.
-
-## How to use skills
-
-Skills are reusable workflows. Start with `salesforce-cli-automation` for general inspection, then use focused skills such as `salesforce-apex-review`, `salesforce-flow-review`, `salesforce-lwc-review`, `salesforce-permission-security-review`, `salesforce-deployment-validation`, `salesforce-metadata-discovery`, `salesforce-code-creation`, or `salesforce-debugging`.
-
-## How to use prompts
-
-Prompts in `.github/prompts` are standalone. Paste one into Codex, GitHub Copilot Chat, or another agent tool in the target Salesforce DX repo. Each prompt includes task, context to inspect, required workflow, safe commands, constraints, and expected output.
-
-## Recommended workflow
-
-1. Inspect repository structure and `sfdx-project.json`.
-2. Identify package directories and changed metadata.
-3. Select a specialized agent or prompt.
-4. Run safe read-only commands first.
-5. Make the smallest useful change if implementation is requested.
-6. Run tests, lint, scanner, or validate-only deployment only when appropriate.
-7. Report commands run, validation status, and remaining risks.
-
-## Safety rules
-
-- No secrets, org aliases, customer data, usernames, or hardcoded org URLs.
-- No production deployment unless explicitly requested.
-- No destructive commands unless explicitly requested.
-- Always distinguish safe read-only commands, validation/dry-run commands, and dangerous commands.
-- Never claim validation passed unless it actually ran.
-
-## Example tasks
-
-- "Review this Salesforce Flow for bulk safety and recursion risk."
-- "Create an Apex service class and test class for this requirement."
-- "Inspect the project and generate a package.xml for modified metadata."
-- "Review all automations touching Invoice__c.Status__c."
-- "Validate deployment without deploying to production."
-
-## Documentation
-
-- `docs/agent-usage-guide.md`
-- `docs/prompt-library-guide.md`
-- `docs/salesforce-review-playbook.md`
-- `docs/salesforce-cli-commands.md`
-- `docs/research/*.md`
+This repo remains focused on developer-oriented Salesforce review, implementation, validation, deployment planning, and documentation generation.

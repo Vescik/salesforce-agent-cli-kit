@@ -7,6 +7,7 @@
 - Salesforce Test Agent: plan and run safe tests, lint, scanner, CI checks, and validation evidence collection.
 - Salesforce Deployment Agent: prepare package scope, validate-only planning, release notes, rollback notes, and deployment checklists.
 - Salesforce Documentation Creator Agent: create Azure Wiki pages, user story context, metadata summaries, release notes, and handoff documentation.
+- Refactor Documentation Agent: generate Salesforce User Story Azure Wiki documentation from User Story details and local `force-app/` metadata.
 
 ## Why Developer and Review are separate
 
@@ -27,3 +28,4 @@ They should stay separate. Code review is a risk-classification workflow and sho
 - Test Agent to Deployment Agent for release readiness.
 - Deployment Agent to Documentation Creator Agent for release notes and rollback docs.
 - Documentation Creator Agent to Code Review Agent when documentation exposes technical uncertainty or risk.
+- Refactor Documentation Agent to Salesforce Metadata Analysis Sub-Agent for deep metadata analysis before wiki draft generation.

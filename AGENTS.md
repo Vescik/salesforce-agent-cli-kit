@@ -2,11 +2,23 @@
 
 ## Purpose
 
-This repository is a reusable Salesforce AI Agent Toolkit for Salesforce DX inspection, review, implementation, and validation workflows.
+This repository is a reusable, flat Salesforce AI Agent Toolkit for Salesforce DX inspection, review, implementation, testing, deployment planning, and Azure Wiki documentation workflows.
 
 Created by Dominik Machowski.
 
 Agents should keep this repo generic. Do not add org aliases, credentials, company names, customer data, object-specific assumptions, or one-off project instructions.
+
+## Repository structure rules
+
+- Keep the kit as a single root-level package.
+- Do not add nested agent workspaces such as `salesforce-copilot-agent/`.
+- Put GitHub Copilot custom agents in `.github/agents/`.
+- Put documentation agents in `agents/`.
+- Put reusable skills in `skills/` and GitHub skill folders in `.github/skills/`.
+- Put reusable prompts in `prompts/` and GitHub prompt files in `.github/prompts/`.
+- Put helper scripts in `scripts/`.
+- Put Azure Wiki templates in `templates/`.
+- Keep local-only config in `config.json`; commit only `config.example.json`.
 
 ## Global safety rules
 
@@ -69,5 +81,6 @@ Use:
 - Use Salesforce Test Agent for Apex tests, LWC tests, lint, scanner, CI checks, and validation evidence.
 - Use Salesforce Deployment Agent for package scope, validate-only planning, release notes, rollback notes, and deployment checklists.
 - Use Salesforce Documentation Creator Agent for Azure Wiki pages, user story context, metadata summaries, release notes, and handoff docs.
+- Use Refactor Documentation Agent for Salesforce User Story Azure Wiki documentation generated from User Story details and local `force-app/` metadata.
 
 Keep Developer Agent separate from Code Review Agent. Review tasks should not edit files by default; implementation tasks may edit files only when requested.

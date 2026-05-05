@@ -32,10 +32,21 @@ node scripts/generate-user-story-doc.js \\
   --wiki-repo-path "../azure-wiki-repo" \\
   --wiki-docs-path "User-Stories"
 
+Optional:
+  --config "config.json"
+
 Notes:
+- Copy config.example.json to config.json for local repo paths.
 - The wiki repo path must already exist.
 - Existing documentation is not overwritten. A proposed update file is created instead.
 - This script does not commit or push. Publishing requires explicit user approval.`;
+}
+
+function readConfig(configPath) {
+  const resolvedPath = configPath || 'config.json';
+  if (!fs.existsSync(resolvedPath)) return {};
+  const raw = fs.readFileSync(resolvedPath, 'utf8');
+  return JSON.parse(raw);
 }
 
 function readOptionalFile(filePath) {
@@ -353,14 +364,15 @@ function main() {
     return;
   }
 
+  const config = readConfig(args.config);
   const title = args.title || 'Untitled User Story';
   const storyId = args['story-id'] || '';
   const description = args.description || readOptionalFile(args['description-file']);
   const acceptanceCriteria = args['acceptance-criteria'] || readOptionalFile(args['acceptance-criteria-file']);
   const implementationNotes = args['implementation-notes'] || readOptionalFile(args['implementation-notes-file']);
-  const forceAppPath = args['force-app-path'] || 'force-app';
-  const wikiRepoPath = args['wiki-repo-path'] || DEFAULT_WIKI_REPO_PATH;
-  const wikiDocsPath = args['wiki-docs-path'] || DEFAULT_WIKI_DOCS_PATH;
+  const forceAppPath = args['force-app-path'] || config.forceAppPath || 'force-app';
+  const wikiRepoPath = args['wiki-repo-path'] || config.wikiRepoPath || DEFAULT_WIKI_REPO_PATH;
+  const wikiDocsPath = args['wiki-docs-path'] || config.wikiDocsPath || DEFAULT_WIKI_DOCS_PATH;
   const changedFiles = args['changed-files'] ? String(args['changed-files']).split(',') : [];
 
   if (!fs.existsSync(wikiRepoPath)) {

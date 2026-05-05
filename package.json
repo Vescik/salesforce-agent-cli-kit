@@ -1,7 +1,7 @@
 {
-  "name": "salesforce-copilot-agent",
+  "name": "salesforce-agent-cli-kit",
   "version": "1.0.0",
-  "description": "This repository is a reusable GitHub Copilot Agent workspace for Salesforce metadata analysis, Azure Wiki documentation, User Story context generation, and GitHub deployment preparation.",
+  "description": "OOTB Salesforce Copilot agent kit for metadata analysis, Azure Wiki documentation, User Story context generation, review, testing, and deployment planning.",
   "main": "scripts/scan-force-app.js",
   "scripts": {
     "scan": "node scripts/scan-force-app.js",

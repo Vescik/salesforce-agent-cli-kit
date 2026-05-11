@@ -100,6 +100,7 @@ Use `.github/agents/` for Salesforce development, Azure Wiki documentation, and 
 - `salesforce-code-review-agent.agent.md`
 - `salesforce-developer-agent.agent.md`
 - `salesforce-metadata-documentation-agent.md`
+- `salesforce-managed-package-mcp-agent.agent.md`
 - `salesforce-test-docx-creator.agent.md`
 - `salesforce-test-agent.agent.md`
 - `salesforce-deployment-agent.agent.md`
@@ -108,6 +109,22 @@ Use `.github/agents/` for Salesforce development, Azure Wiki documentation, and 
 - `subagents/salesforce-metadata-analysis-agent.md`
 
 Developer and Code Review remain separate on purpose: review should classify risk without editing by default, while development is an implementation workflow.
+
+### Salesforce MCP Managed Package Agent
+
+Use `salesforce-managed-package-mcp-agent.agent.md` when a Salesforce DX project references a managed package or namespace and you need a package-aware analysis.
+
+Use it for:
+
+- finding namespace-prefixed references in local metadata
+- checking package dependency risk before deployment
+- explaining package objects, fields, Apex, Flow, LWC, and permission references
+- documenting installed package evidence from a confirmed non-production org
+- preparing safe next checks for package upgrades or missing package dependencies
+
+Salesforce MCP is not enabled by default. Start local-only, then use Salesforce MCP in VS Code only after you configure it yourself with a sandbox/dev org alias. Recommended initial toolsets are `core,orgs,code-analysis`.
+
+Do not use this agent to install or uninstall packages, deploy metadata, retrieve over local files, mutate data, run anonymous Apex, or change permissions.
 
 ### Skills And Prompts
 

@@ -79,6 +79,7 @@ Use:
 - Use Salesforce Developer Agent for implementation across Apex, Flow metadata, LWC, metadata XML, scripts, and docs.
 - Use Salesforce Test Agent for Apex tests, LWC tests, lint, scanner, CI checks, and validation evidence.
 - Use Salesforce Test DOCX Creator for tester-facing `HOW_TO_TEST_[USER STORY ID].docx` documents generated from User Story Description and Acceptance Criteria.
+- Use Salesforce Managed Package MCP Agent for managed package namespace analysis, installed package evidence, package dependency risk, and Salesforce MCP-assisted read-only package checks.
 - Use Salesforce Deployment Agent for package scope, validate-only planning, release notes, rollback notes, and deployment checklists.
 - Use Salesforce Documentation Creator Agent for Azure Wiki pages, user story context, metadata summaries, release notes, and handoff docs.
 - Use Refactor Documentation Agent for Salesforce User Story Azure Wiki documentation generated from User Story details and local `force-app/` metadata.

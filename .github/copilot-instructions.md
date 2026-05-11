@@ -6,6 +6,8 @@ Use `AGENTS.md` for global safety rules. Use focused files in `.github/agents`, 
 
 This project can use Azure DevOps MCP in VS Code. When the user asks for Azure DevOps Work Item or User Story data, first check whether an Azure DevOps MCP read-only work item tool is available before asking the user to paste Description or Acceptance Criteria.
 
+This project also contains Salesforce MCP research docs under `docs/research/`. Salesforce MCP is not enabled by default. Use Salesforce MCP only from an explicit local VS Code setup, prefer sandbox/dev org aliases, and start with minimal toolsets such as `core,orgs,code-analysis`.
+
 ## Core Behavior
 
 - Always inspect the repository before suggesting changes.
@@ -19,6 +21,7 @@ This project can use Azure DevOps MCP in VS Code. When the user asks for Azure D
 - Do not modify Salesforce metadata unless the user explicitly asks for implementation.
 - Do not deploy to production or run destructive commands without explicit approval.
 - Use Azure DevOps MCP only for read-only fetches unless the user explicitly requests a write action and the relevant safety policy allows it.
+- Use Salesforce MCP for managed package or org-connected inspection only when configured by the user, and do not use it for package install/uninstall, deployment, data mutation, anonymous Apex, or permission changes.
 
 ## Salesforce DX Inspection
 
